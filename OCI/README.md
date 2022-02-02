@@ -18,3 +18,5 @@ Mount the volume as follows:
 sudo iscsiadm -m node -o new -T iqn.2015-12.com.oracleiaas:61329e5f-3c77-44e8-a9b0-bbb5531217f4 -p 169.254.2.2:3260
 sudo iscsiadm -m node -o update -T iqn.2015-12.com.oracleiaas:61329e5f-3c77-44e8-a9b0-bbb5531217f4 -n 
 ```
+
+The volume is accesible viahome/ubuntu/work my thinking is that we can donwload the datasets into here, to save us always having to download that again and again. 
