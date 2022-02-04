@@ -7,14 +7,14 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip
 
 # Clone He repo and dependencies
 RUN git clone https://github.com/jxhe/unify-parameter-efficient-tuning.git && \
-    git clone git@github.com:jxhe/MAM-adapter.git && \
-    git clone git@github.com:moses-smt/mosesdecoder.git
+    git clone https://github.com/google-research/prompt-tuning.git
 
-# Install other requirements
-RUN cd MAM-adapter && \
+# Install He repo requirements
+RUN cd unify-parameter-efficient-tuning && \
     pip install -e . && \
-    pip install datasets==1.11.0
+    pip install datasets==1.11.0 && \
+    cd ..
 
-VOLUME /home/ubuntu/work
+# VOLUME /home/ubuntu/work
 
     
