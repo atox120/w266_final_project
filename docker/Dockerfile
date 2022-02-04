@@ -16,6 +16,6 @@ RUN cd unify-parameter-efficient-tuning && \
     pip install datasets==1.11.0 && \
     cd ..
 
-# VOLUME /home/ubuntu/work
+VOLUME /home/ubuntu/work
 
 
