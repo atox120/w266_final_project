@@ -5,8 +5,9 @@ FROM nvcr.io/nvidia/pytorch:22.01-py3
 RUN apt update
 RUN python3 -m pip install --no-cache-dir --upgrade pip
 
-# Clone He repo and dependencies
-RUN git clone https://github.com/jxhe/unify-parameter-efficient-tuning.git && \
+# Clone Project, He and Lester repos
+RUN git clone https://github.com/atox120/w266_final_project.git && \
+    git clone https://github.com/jxhe/unify-parameter-efficient-tuning.git && \
     git clone https://github.com/google-research/prompt-tuning.git
 
 # Install He repo requirements
@@ -17,4 +18,4 @@ RUN cd unify-parameter-efficient-tuning && \
 
 # VOLUME /home/ubuntu/work
 
-    
+
