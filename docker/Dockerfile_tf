@@ -1,0 +1,23 @@
+# NVIDIA Tensorflow 2.0 Container
+FROM nvcr.io/nvidia/tensorflow:22.01-tf2-py3
+
+# Update apt and pip
+RUN apt update
+RUN python3 -m pip install --no-cache-dir --upgrade pip
+
+# Install Required Python Packages
+COPY tf_requirements.txt /tmp/
+RUN pip install --requirement /tmp/tf_requirements.txt
+
+# Clone He and Lester repos
+RUN git clone https://github.com/jxhe/unify-parameter-efficient-tuning.git && \
+    git clone https://github.com/google-research/prompt-tuning.git
+
+# Install He repo requirements
+RUN cd unify-parameter-efficient-tuning && \
+    pip install -e . && \
+    pip install datasets==1.11.0 && \
+    cd ..
+
+
+

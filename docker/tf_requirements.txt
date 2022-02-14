@@ -1,0 +1,6 @@
+tensorflow-text==2.7.0
+seqio==0.0.7
+t5==0.9.3
+tensorflow-datasets==4.5.2
+rouge-score==0.0.4
+sacrebleu==2.0.0
