@@ -2,7 +2,7 @@
 
 1. To build docker image:
 ```bash
-sudo docker build -t rbector/w266-final-project:latest .
+sudo docker build -f Dockerfile_torch -t rbector/w266-final-project:latest .
 ```
 2. To run docker image on cpu device:
 ```bash
@@ -21,11 +21,11 @@ Locally i've tagged the image as ```atox120/w266-fp-tf2:0.1``` and pushed it to 
 
 2. To run image
 ```bash
-sudo docker run -it -rm -v /home/ubuntu/work:/workspace/work atox120/w266-fp-tf2:0.1
+sudo docker run -it --rm -v /home/ubuntu/work:/workspace/work atox120/w266-fp-tf2:0.1
 ```
 with gpus and ports:
 ```bash
-sudo docker run -it -rm -v /home/ubuntu/work:/workspace/work -p 8888:8888 --gpus=all atox120/w266-fp-tf2:0.1
+sudo docker run -it --rm -v /home/ubuntu/work:/workspace/work -p 8888:8888 --gpus=all atox120/w266-fp-tf2:0.1
 
 ```
 
