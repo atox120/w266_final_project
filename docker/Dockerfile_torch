@@ -15,5 +15,8 @@ RUN cd unify-parameter-efficient-tuning && \
     pip install datasets==1.11.0 && \
     cd ..
 
+# Add repos to PYTHONPATH
 
+ENV PYTHONPATH="${PYTHONPATH}:/workspace/unify-parameter-efficient-tuning"
+ENV PYTHONPATH="${PYTHONPATH}:/workspace/prompt-tuning"
 
