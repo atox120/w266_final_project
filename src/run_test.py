@@ -13,10 +13,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+###############AT COMMENT the above should probably be re-edited.
 """
 Fine-tuning the library models for sequence to sequence.
 """
-# You can also adapt this script on your own sequence to sequence task. Pointers for this are left as comments.
 
 
 import logging
@@ -24,7 +25,7 @@ import os
 import sys
 from dataclasses import dataclass, field
 from typing import Optional
-
+# AT Don't think we need nltk
 import nltk  # Here to have a nice missing dependency error message early on
 import numpy as np
 from datasets import load_dataset, load_metric
@@ -38,8 +39,8 @@ from transformers import (
     AutoTokenizer,
     DataCollatorForSeq2Seq,
     HfArgumentParser,
-    Seq2SeqTrainer,
-    Seq2SeqTrainingArguments,
+    Seq2SeqTrainer,           ### trainer_seq2seq.py although trainer.py is the parent class. 
+    Seq2SeqTrainingArguments, ### training_args_seq2seq.py
     set_seed,
 )
 from transformers.file_utils import is_offline_mode
@@ -58,14 +59,14 @@ from petl.options import (
 )
 from petl.petl_encdec_model import PETLEncDecModel
 
-
+#### AT Remove start?
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.9.0.dev0")
-
 require_version("datasets>=1.8.0", "To fix: pip install -r examples/pytorch/summarization/requirements.txt")
-
+#### AT Remove end. 
 logger = logging.getLogger(__name__)
 
+#### AT Remove Start
 try:
     nltk.data.find("tokenizers/punkt")
 except (LookupError, OSError):
@@ -75,7 +76,17 @@ except (LookupError, OSError):
         )
     with FileLock(".lock") as lock:
         nltk.download("punkt", quiet=True)
+#### AT Remove End
 
+
+### AT these data class dspeciications can probably be moved to another file. See for instance 
+#  from petl.options import (
+#     GenerationArguments,
+#     TuneArguments,
+# )
+# These are actually references to the petl folder and there they define some dataclasses in those scripts;
+# so i feel could just do the same, depends how 'pedantic' you want to be. Note they need to actually write 
+# Additional loops to 'set those config values' -> see lines 382->407
 
 @dataclass
 class ModelArguments:
@@ -239,7 +250,8 @@ class DataTrainingArguments:
         if self.val_max_target_length is None:
             self.val_max_target_length = self.max_target_length
 
-
+### AT: If we want to be brutal we should
+### remove the non-wanyu datasets. 
 summarization_name_mapping = {
     "amazon_reviews_multi": ("review_body", "review_title"),
     "big_patent": ("description", "abstract"),
@@ -255,7 +267,7 @@ summarization_name_mapping = {
     "stjokerli/TextToText_mnli_seqio": ("inputs", "targets"),
     "stjokerli/TextToText_cb_seqio": ("inputs", "targets")
 }
-
+### AT Remove or keep end, 
 
 def main():
     # See all possible arguments in src/transformers/training_args.py
@@ -291,6 +303,7 @@ def main():
         transformers.utils.logging.set_verbosity_info()
     logger.info(f"Training/evaluation parameters {training_args}")
 
+########## AT: I don't think we need this. 
     if data_args.source_prefix is None and model_args.model_name_or_path in [
         "t5-small",
         "t5-base",
@@ -302,6 +315,7 @@ def main():
             "You're running a t5 model but didn't provide a source prefix, which is the expected, e.g. with "
             "`--source_prefix 'summarize: ' `"
         )
+########## AT end 
 
     # Detecting last checkpoint.
     last_checkpoint = None
@@ -320,6 +334,8 @@ def main():
 
     # Set seed before initializing model.
     set_seed(training_args.seed)
+
+#### AT We can probably remove a lot of this boiler plate. - Begin
 
     # Get the datasets: you can either provide your own CSV/JSON training and evaluation files (see below)
     # or just provide the name of one of the public datasets available on the hub at https://huggingface.co/datasets/
@@ -348,6 +364,9 @@ def main():
     # See more about loading any type of standard or custom dataset (from files, python dict, pandas DataFrame, etc) at
     # https://huggingface.co/docs/datasets/loading_datasets.html.
 
+    
+#### AT We can probably remove a lot of this boiler plate. - END 
+
     # Load pretrained model and tokenizer
     #
     # Distributed training:
@@ -359,7 +378,6 @@ def main():
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
     )
-
 
     # put generation args into config
     for k, v in vars(gen_args).items():
@@ -545,25 +563,29 @@ def main():
                     args=tune_args,
                     pretrained_model=model,
                     )
-
+##### AT - I think this is just here from the PETL people.
     # print(model)
 
     # for n, p in model.named_parameters():
     #     print(n, p.requires_grad)
 
+##### AT - I think this is just here from the PETL people. - END
     # Metric
+    
+#### AT Currently does nothing.     
     metric = load_metric("accuracy")
-
+#### AT END
     gen_prefix = "val"
 
     def postprocess_text(preds, labels):
         str_preds = [pred.strip() for pred in preds]
         str_labels = [label.strip() for label in labels]
 
+### AT not sure we really need this, but it doesn't seem to be breaking anything either
         # rougeLSum expects newline after each sentence
         preds = ["\n".join(nltk.sent_tokenize(pred)) for pred in str_preds]
         labels = ["\n".join(nltk.sent_tokenize(label)) for label in str_labels]
-
+### AT END
         return preds, labels, str_preds, str_labels
 
     def compute_metrics(eval_preds):
@@ -597,7 +619,7 @@ def main():
                 accuracy_score(decoded_labels, decoded_preds, normalize=True)
             )
         }
-
+## AT old code for ROUGE
 #        result = metric.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True)
 #        # Extract a few results from ROUGE
 #        result = {key: value.mid.fmeasure * 100 for key, value in result.items()}
@@ -605,7 +627,7 @@ def main():
 #        prediction_lens = [np.count_nonzero(pred != tokenizer.pad_token_id) for pred in preds]
 #        result["gen_len"] = np.mean(prediction_lens)
 #        result = {k: round(v, 4) for k, v in result.items()}
-
+## AT END
         return result
 
     # Initialize our Trainer
