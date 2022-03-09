@@ -112,7 +112,7 @@ then
     weight_decay=0
     max_grad_norm=1
     max_train_samples=1000
-    bsz=24
+    bsz=8
     gradient_steps=1
     num_train_epochs=30
     max_steps=-1
