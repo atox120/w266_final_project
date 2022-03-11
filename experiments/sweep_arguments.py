@@ -1,4 +1,4 @@
-# #### Parameter file for runs #####
+##### Parameter file for runs #####
 
 def main():
     load_run_arguments
