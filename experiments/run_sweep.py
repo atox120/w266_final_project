@@ -20,7 +20,7 @@
 Fine-tuning the library models for sequence to sequence.
 """
 
-
+from datetime import datetime
 import logging
 import os
 import sys
@@ -51,7 +51,7 @@ from transformers.utils.versions import require_version
 
 import sys
 import wandb
-wandb.init(project="w266-fp-spot_petl", entity="w266_wra")
+
 sys.path.insert(2, "./")
 
 from petl.options import (
@@ -65,6 +65,13 @@ from arguments import (
     ModelArguments,
     DataTrainingArguments
 )
+
+#Get time for unique folder
+run_start = datetime.now()
+start_time = run_start.strftime("%Y%b%d_%H%M%S")
+
+#Initialist wandb
+wandb.init(project="w266-fp-spot_petl", entity="w266_wra")
 
 logger = logging.getLogger(__name__)
 
@@ -85,12 +92,17 @@ column_mapping = {
 
 def main():
     run_args = sweep_arguments.load_sweep_arguments()
+    
+    #Set unique folder for the checkpoints
+    run_args['output_dir'] = run_args['output_dir']+f"/{start_time}"
     run_experiment(run_args)
 
 def run_experiment(args:dict):
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
     # We now keep distinct sets of args, for a cleaner separation of concerns.
+    
+    ## Wandb sweep integration. 
     wandb.init(config=args)
     config = wandb.config
     for item in config.items():
@@ -100,8 +112,8 @@ def run_experiment(args:dict):
             args[wandb_key] = wandb_val
         else:
             args.update({wandb_key: wandb_val})
-        print(args[wandb_key])
-        
+        print(f"Sweep Argument Check:\n{args[wandb_key]}")
+    
     parser = HfArgumentParser(
         (ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments,
             GenerationArguments, TuneArguments)

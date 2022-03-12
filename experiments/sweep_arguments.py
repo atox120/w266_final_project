@@ -9,7 +9,7 @@ def load_sweep_arguments():
     dataset = "stjokerli/TextToText_cb_seqio"
     run_name = "MNLI_Sweep"
     model_or_path = "facebook/bart-large"
-    output_directory = "/workspace/w266_final_project/src/checkpoints/sweep" 
+    output_directory = f"/workspace/w266_final_project/src/checkpoints/{run_name}" 
     preprocessing_num_workers = 4
     do_eval = True
     do_train = True
@@ -19,11 +19,11 @@ def load_sweep_arguments():
     # Train
     max_steps = 150000
     num_train_epochs = 30
-    train_batch_size = 16
+    train_batch_size = 8
     gradient_accumulation_steps = 1
     # Eval
     save_steps = 2500
-    eval_batch_size = 16
+    eval_batch_size = 8
     max_eval_samples = 1600
     # eval_accumulation_steps - not set
     
@@ -59,7 +59,7 @@ def load_sweep_arguments():
     args = {
         "dataset_name": dataset,
         "model_name_or_path": model_or_path,
-        "cache_dir": "checkpoints/hf_model",
+        "cache_dir": "checkpoints/PETL_model",
         "attn_mode": attn_mode,
         "attn_option": attn_option,
         "attn_composition": attn_composition,
