@@ -30,7 +30,7 @@ from typing import Optional
 import nltk
 import numpy as np
 from datasets import load_dataset, load_metric
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 
 import transformers
 from filelock import FileLock
@@ -401,8 +401,10 @@ def run_experiment(args:dict):
         #AT: Custom Accuracy Function
         result = {
             "accuracy": float(
-                accuracy_score(decoded_labels, decoded_preds, normalize=True)
-            )
+                accuracy_score(decoded_labels, decoded_preds, normalize=True)),
+            "macro f1": float(
+                f1_score(y_true=decoded_labels, y_pred=decoded_preds, average="macro"))
+            
         }
         return result
 
