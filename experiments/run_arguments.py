@@ -3,11 +3,11 @@
 def main():
     load_run_arguments
 
-def load_sweep_arguments():    
+def load_run_arguments():    
     
     ## Dataset and model parameters
     dataset = "stjokerli/TextToText_cb_seqio"
-    run_name = "MNLI_Sweep"
+    run_name = "test_run"
     model_or_path = "facebook/bart-large"
     output_directory = f"/workspace/w266_final_project/src/checkpoints/{run_name}" 
     preprocessing_num_workers = 4
@@ -45,7 +45,7 @@ def load_sweep_arguments():
     ffn_bn=512
     
     #Set debug Mode
-    debug = False # Bool - True or False 
+    debug = True # Bool - True or False 
     if debug:
         debug_max_train_samples = 1000
         train_batch_size = 4
