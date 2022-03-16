@@ -58,6 +58,10 @@ class DataTrainingArguments:
         default=None,
         metadata={"help": "The name of the column in the datasets containing the summaries (for summarization)."},
     )
+    idx_column: Optional[str] = field(
+        default=None,
+        metadata={"help": "The name of the column in the datasets containing the idx (for summarization)."},
+    )
     train_file: Optional[str] = field(
         default=None, metadata={"help": "The input training data file (a jsonlines or csv file)."}
     )
