@@ -70,9 +70,6 @@ from arguments import (
 run_start = datetime.now()
 start_time = run_start.strftime("%Y%b%d_%H%M%S")
 
-#Initialist wandb
-wandb.init(project="w266-fp-spot_petl", entity="w266_wra")
-
 logger = logging.getLogger(__name__)
 
 try:
@@ -103,7 +100,7 @@ def run_experiment(args:dict):
     # We now keep distinct sets of args, for a cleaner separation of concerns.
     
     ## Wandb sweep integration. 
-    wandb.init(config=args)
+    wandb.init(project="w266-fp-spot_petl", entity="w266_wra", config=args)
     config = wandb.config
     for item in config.items():
         wandb_key = item[0]
@@ -501,6 +498,10 @@ def run_experiment(args:dict):
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
                 with open(output_prediction_file, "w") as writer:
                     writer.write("\n".join(predictions))
+
+                output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_submission.txt")
+                with open(output_prediction_file, "w") as writer:
+                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(predict_dataset['idx'],predictions)]))
 
     if training_args.push_to_hub:
         kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "summarization"}

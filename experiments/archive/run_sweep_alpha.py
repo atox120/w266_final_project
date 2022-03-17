@@ -20,7 +20,7 @@
 Fine-tuning the library models for sequence to sequence.
 """
 
-
+from datetime import datetime
 import logging
 import os
 import sys
@@ -51,6 +51,7 @@ from transformers.utils.versions import require_version
 
 import sys
 import wandb
+
 sys.path.insert(2, "./")
 
 from petl.options import (
@@ -59,11 +60,18 @@ from petl.options import (
 )
 from petl.petl_encdec_model import PETLEncDecModel
 
-import run_arguments
+import sweep_arguments
 from arguments import (
     ModelArguments,
     DataTrainingArguments
 )
+
+#Get time for unique folder
+run_start = datetime.now()
+start_time = run_start.strftime("%Y%b%d_%H%M%S")
+
+#Initialist wandb
+wandb.init(project="w266-fp-spot_petl", entity="w266_wra")
 
 logger = logging.getLogger(__name__)
 
@@ -81,26 +89,38 @@ column_mapping = {
     "stjokerli/TextToText_mnli_seqio": ("inputs", "targets"),
     "stjokerli/TextToText_cb_seqio": ("inputs", "targets")
 }
-        
+
 def main():
-    run_args = run_arguments.load_run_arguments()
-    run_experiment(run_args)
+    run_args = sweep_arguments.load_sweep_arguments()
     
+    #Set unique folder for the checkpoints
+    run_args['output_dir'] = run_args['output_dir']+f"/{start_time}"
+    run_experiment(run_args)
+
 def run_experiment(args:dict):
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
     # We now keep distinct sets of args, for a cleaner separation of concerns.
-
+    
+    ## Wandb sweep integration. 
+    wandb.init(config=args)
+    config = wandb.config
+    for item in config.items():
+        wandb_key = item[0]
+        wandb_val = item[1]
+        if wandb_key in args.keys():
+            args[wandb_key] = wandb_val
+        else:
+            args.update({wandb_key: wandb_val})
+        print(f"Sweep Argument Check:\n{args[wandb_key]}")
+    
     parser = HfArgumentParser(
         (ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments,
             GenerationArguments, TuneArguments)
         )
     
     model_args, data_args, training_args, gen_args, tune_args = parser.parse_dict(args)
-
-    # upload to wandb
-    wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=training_args.run_name)
-
+    
     # Setup logging
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",

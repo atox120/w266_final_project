@@ -1,15 +1,16 @@
 ##### Parameter file for runs #####
 
 def main():
-    load_run_arguments
+    load_run_arguments()
 
 def load_run_arguments():    
     
     ## Dataset and model parameters
-    dataset = "stjokerli/TextToText_cb_seqio"
-    run_name = "test_run"
+    dataset = "stjokerli/TextToText_mnli_seqio"
+    run_name = "test_new_repo"
     model_or_path = "facebook/bart-large"
-    output_directory = f"/workspace/w266_final_project/src/checkpoints/{run_name}" 
+    output_directory = f"/workspace/w266_final_project/model_checkpoints/{run_name}" 
+    cache_dir = "/workspace/w266_final_project/dataset_checkpoints/PETL_model"
     preprocessing_num_workers = 4
     do_eval = True
     do_train = True
@@ -54,12 +55,12 @@ def load_run_arguments():
         eval_batch_size = 16
         max_eval_samples = 100
         eval_batch_size = 16
-        save_steps = 25       
+        save_steps = 50       
 
     args = {
         "dataset_name": dataset,
         "model_name_or_path": model_or_path,
-        "cache_dir": "checkpoints/PETL_model",
+        "cache_dir": cache_dir,
         "attn_mode": attn_mode,
         "attn_option": attn_option,
         "attn_composition": attn_composition,
@@ -95,7 +96,7 @@ def load_run_arguments():
         "weight_decay": weight_decay,
         "warmup_steps": 0,
         "fp16": True,
-        "logging_steps": 100,
+        "logging_steps": 10,
         "save_total_limit": 2,
         "label_smoothing_factor": 0.1,
         "evaluation_strategy": "steps",

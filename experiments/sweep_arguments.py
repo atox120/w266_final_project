@@ -1,12 +1,12 @@
 ##### Parameter file for runs #####
 
 def main():
-    load_run_arguments
+    load_run_arguments()
 
 def load_sweep_arguments():    
     
     ## Dataset and model parameters
-    dataset = "stjokerli/TextToText_cb_seqio"
+    dataset = "stjokerli/TextToText_mnli_seqio"
     run_name = "MNLI_Sweep"
     model_or_path = "facebook/bart-large"
     output_directory = f"/workspace/w266_final_project/src/checkpoints/{run_name}" 

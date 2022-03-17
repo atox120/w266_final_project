@@ -14,8 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-###############
-# Todo make wandb hyperparameter sweep compatible. 
+###############AT COMMENT the above should probably be re-edited.
 """
 Fine-tuning the library models for sequence to sequence.
 """
@@ -26,11 +25,9 @@ import os
 import sys
 from dataclasses import dataclass, field
 from typing import Optional
-
-import nltk
 import numpy as np
 from datasets import load_dataset, load_metric
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score
 
 import transformers
 from filelock import FileLock
@@ -51,6 +48,7 @@ from transformers.utils.versions import require_version
 
 import sys
 import wandb
+wandb.init(project="w266-fp-spot_petl", entity="w266_wra")
 sys.path.insert(2, "./")
 
 from petl.options import (
@@ -59,33 +57,20 @@ from petl.options import (
 )
 from petl.petl_encdec_model import PETLEncDecModel
 
-import run_arguments
 from arguments import (
     ModelArguments,
     DataTrainingArguments
 )
 
+
 logger = logging.getLogger(__name__)
 
-try:
-    nltk.data.find("tokenizers/punkt")
-except (LookupError, OSError):
-    if is_offline_mode():
-        raise LookupError(
-            "Offline mode: run this script without TRANSFORMERS_OFFLINE first to download nltk data files"
-        )
-    with FileLock(".lock") as lock:
-        nltk.download("punkt", quiet=True)
 
 column_mapping = {
     "stjokerli/TextToText_mnli_seqio": ("inputs", "targets"),
     "stjokerli/TextToText_cb_seqio": ("inputs", "targets")
 }
-        
-def main():
-    run_args = run_arguments.load_run_arguments()
-    run_experiment(run_args)
-    
+
 def run_experiment(args:dict):
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
@@ -97,10 +82,7 @@ def run_experiment(args:dict):
         )
     
     model_args, data_args, training_args, gen_args, tune_args = parser.parse_dict(args)
-
-    # upload to wandb
-    wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=training_args.run_name)
-
+    
     # Setup logging
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
@@ -403,10 +385,8 @@ def run_experiment(args:dict):
         #AT: Custom Accuracy Function
         result = {
             "accuracy": float(
-                accuracy_score(decoded_labels, decoded_preds, normalize=True)),
-            "macro f1": float(
-                f1_score(y_true=decoded_labels, y_pred=decoded_preds, average="macro"))
-            
+                accuracy_score(decoded_labels, decoded_preds, normalize=True)
+            )
         }
         return result
 
@@ -497,6 +477,3 @@ def run_experiment(args:dict):
         trainer.push_to_hub(**kwargs)
 
     return results
-
-if __name__ == "__main__":
-    main()
