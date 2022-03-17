@@ -36,9 +36,9 @@ def load_run_arguments():
     attn_mode = "prefix"
     attn_option = "concat"
     attn_composition = "add"
-    attn_bn=30
+    attn_bn=200
     mid_dim=800
-    ffn_mode = "adapter"
+    ffn_mode = "none"
     ffn_option = "parallel"
     ffn_adapter_layernorm_option = "none"
     ffn_adapter_scalar = 4
