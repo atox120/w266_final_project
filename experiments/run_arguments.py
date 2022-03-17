@@ -1,5 +1,35 @@
 ##### Parameter file for runs #####
 
+def CopyCheckpointFolder(resume_from_checkpoint,output_directory):
+    '''
+    copy the files neede in the output directory with a name checkpoint-resume_from_checkpoint
+    the folder will be delete as we only save limited checkpoint, but its exactly what we wanna
+    return the new resume_from_checkpoint folder address
+    '''
+    import shutil
+    import os    
+    #set the folder adress
+    new_resume_from_checkpoint=output_directory+'/checkpoint-resume_from_checkpoint'
+    
+    #delete the existing folder
+    print('deleting the existing checkpoint-resume_from_checkpoint folder')
+    os.makedirs(os.path.dirname(output_directory), exist_ok=True)
+    shutil.rmtree(new_resume_from_checkpoint,ignore_errors=True)
+    
+    #copy the folder
+    print('copying from {resume_from_checkpoint} into checkpoint-resume_from_checkpoint folder')
+    os.makedirs(os.path.dirname(new_resume_from_checkpoint), exist_ok=True)
+    shutil.copytree(resume_from_checkpoint,new_resume_from_checkpoint, symlinks=False, ignore=None, copy_function=shutil.copy2, ignore_dangling_symlinks=False, 
+                dirs_exist_ok=False)
+        
+    #remove the optimizer, scheduler and trainer_state
+
+    for i in ['optimizer.pt','scheduler.pt','trainer_state.json']:
+        os.remove(f"{new_resume_from_checkpoint}/{i}")
+
+    
+    return new_resume_from_checkpoint
+
 def main():
     load_run_arguments()
 
@@ -8,9 +38,23 @@ def load_run_arguments():
     ## Dataset and model parameters
     dataset = "stjokerli/TextToText_mnli_seqio"
     run_name = "MAM_MNLI_run1"
-    model_or_path = "facebook/bart-large"
     output_directory = f"/workspace/w266_final_project/model_checkpoints/{run_name}" 
     cache_dir = "/workspace/w266_final_project/dataset_checkpoints/PETL_model"
+
+    # for source learning
+    model_or_path = "facebook/bart-large" 
+
+    
+    # for target learning (read from checkpoints) do not forget set the argument
+    model_or_path = "/workspace/w266_final_project/src/checkpoints/mnli_prefix_relearn/checkpoint-100000"
+    resume_from_checkpoint=load_path=model_or_path # use when target learning, commend this out for source learning
+    
+    #set up for the resume_from_checkpoint (no need to touch)
+    try:
+        resume_from_checkpoint=CopyCheckpointFolder(resume_from_checkpoint,output_directory)
+    except UnboundLocalError:
+        pass
+
     preprocessing_num_workers = 4
     do_eval = True
     do_train = True
@@ -48,7 +92,7 @@ def load_run_arguments():
     #Set debug Mode
     debug = False # Bool - True or False 
     if debug:
-        debug_max_train_samples = 1000
+        debug_max_train_samples = 300
         train_batch_size = 4
         gradient_accumulation_step = 1
         max_steps = 250
@@ -61,6 +105,8 @@ def load_run_arguments():
         "dataset_name": dataset,
         "model_name_or_path": model_or_path,
         "cache_dir": cache_dir,
+        "load_path":load_path,
+        "resume_from_checkpoint":resume_from_checkpoint,
         "attn_mode": attn_mode,
         "attn_option": attn_option,
         "attn_composition": attn_composition,
