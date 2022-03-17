@@ -24,6 +24,8 @@ Fine-tuning the library models for sequence to sequence.
 import logging
 import os
 import sys
+import json
+import argparse
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -59,7 +61,6 @@ from petl.options import (
 )
 from petl.petl_encdec_model import PETLEncDecModel
 
-import run_arguments
 from arguments import (
     ModelArguments,
     DataTrainingArguments
@@ -78,14 +79,36 @@ except (LookupError, OSError):
         nltk.download("punkt", quiet=True)
 
 column_mapping = {
-    "stjokerli/TextToText_mnli_seqio": ("inputs", "targets"),
-    "stjokerli/TextToText_cb_seqio": ("inputs", "targets")
+    "stjokerli/TextToText_mnli_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_cb_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_rte_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_copa_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_wsc_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_boolq_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_record_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_wic_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_multirc_seqio": ("inputs", "targets","idx"),
 }
         
-def main():
-    run_args = run_arguments.load_run_arguments()
-    run_experiment(run_args)
-    
+def main(args):
+    args_dict = load_args(args.file)
+    if args.debug:
+        args_dict['debug_max_train_samples'] = 300
+        args_dict['train_batch_size'] = 4
+        args_dict['gradient_accumulation_step'] = 1
+        args_dict['max_steps'] = 250
+        args_dict['eval_batch_size'] = 16
+        args_dict['max_eval_samples'] = 100
+        args_dict['eval_batch_size'] = 16
+        args_dict['save_steps'] = 50 
+         
+    run_experiment(args_dict)
+
+def load_args(file):
+    with open(file, 'r') as f:
+        data = json.load(f)
+    return data
+
 def run_experiment(args:dict):
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
@@ -258,6 +281,16 @@ def run_experiment(args:dict):
             raise ValueError(
                 f"--summary_column' value '{data_args.summary_column}' needs to be one of: {', '.join(column_names)}"
             )
+            
+    # add index into dataset
+    if data_args.idx_column is None:
+        idx_column = dataset_columns[2] if dataset_columns is not None else column_names[2]
+    else:
+        idx_column = data_args.idx_column
+        if idx_column not in column_names:
+            raise ValueError(
+                f"--summary_column' value '{data_args.idx_column}' needs to be one of: {', '.join(column_names)}"
+            )        
 
     # Temporarily set max_target_length for training.
     max_target_length = data_args.max_target_length
@@ -269,6 +302,7 @@ def run_experiment(args:dict):
             f"`{model.__class__.__name__}`. This will lead to loss being calculated twice and will take up more memory"
         )
 
+    # modified to add index    
     def preprocess_function(examples):
         inputs = examples[text_column]
         targets = examples[summary_column]
@@ -287,6 +321,7 @@ def run_experiment(args:dict):
             ]
 
         model_inputs["labels"] = labels["input_ids"]
+        model_inputs['idx']= examples[idx_column]
         return model_inputs
 
     if training_args.do_train:
@@ -428,6 +463,7 @@ def run_experiment(args:dict):
             checkpoint = training_args.resume_from_checkpoint
         elif last_checkpoint is not None:
             checkpoint = last_checkpoint
+        logger.warning(f"resume_from_checkpoint={checkpoint}")
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
         trainer.save_model()  # Saves the tokenizer too for easy upload
 
@@ -441,6 +477,7 @@ def run_experiment(args:dict):
         trainer.save_metrics("train", metrics)
         trainer.save_state()
 
+    # eval first before starting train    
     # Evaluation
     results = {}
     if training_args.do_eval:
@@ -483,6 +520,10 @@ def run_experiment(args:dict):
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
                 with open(output_prediction_file, "w") as writer:
                     writer.write("\n".join(predictions))
+                
+                output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_submission.txt")
+                with open(output_prediction_file, "w") as writer:
+                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(predict_dataset['idx'],predictions)]))
 
     if training_args.push_to_hub:
         kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "summarization"}
@@ -499,4 +540,8 @@ def run_experiment(args:dict):
     return results
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Train a petl model")
+    parser.add_argument('--file', help='json file with all arguments', type=str)
+    parser.add_argument('--debug', help='Bool for debug mode', default=False, type=bool)
+    args = parser.parse_args()
+    main(args)
