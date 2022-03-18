@@ -1,7 +1,7 @@
 # to run the experiments
 
 ```python
-python run_experiment --file example.json --debug True
+python run_experiment.py --file run_settings/example.json --debug True
 ```
 
 # How to do the transfer learing for target tasks
