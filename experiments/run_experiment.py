@@ -28,6 +28,7 @@ import json
 import argparse
 from dataclasses import dataclass, field
 from typing import Optional
+from datetime import datetime
 
 import nltk
 import numpy as np
@@ -91,25 +92,31 @@ column_mapping = {
 }
         
 def main(args):
-    args_dict = load_args(args.file)
+    settings = load_settings(args.file)
     if args.debug:
-        args_dict['debug_max_train_samples'] = 300
-        args_dict['train_batch_size'] = 4
-        args_dict['gradient_accumulation_step'] = 1
-        args_dict['max_steps'] = 250
-        args_dict['eval_batch_size'] = 16
-        args_dict['max_eval_samples'] = 100
-        args_dict['eval_batch_size'] = 16
-        args_dict['save_steps'] = 50 
-         
-    run_experiment(args_dict)
+        settings['debug_max_train_samples'] = 300
+        settings['train_batch_size'] = 4
+        settings['gradient_accumulation_step'] = 1
+        settings['max_steps'] = 250
+        settings['eval_batch_size'] = 16
+        settings['max_eval_samples'] = 100
+        settings['eval_batch_size'] = 16
+        settings['save_steps'] = 50 
+    
+    if args.sweep:
+        #Get time for unique folder
+        run_start = datetime.now()
+        start_time = run_start.strftime("%Y%b%d_%H%M%S")
+        settings['output_dir'] = settings['output_dir']+f"/{start_time}"
+    
+    run_experiment(settings, args.sweep)
 
-def load_args(file):
+def load_settings(file):
     with open(file, 'r') as f:
-        data = json.load(f)
-    return data
+        settings = json.load(f)
+    return settings
 
-def run_experiment(args:dict):
+def run_experiment(settings:dict, sweep:bool):
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
     # We now keep distinct sets of args, for a cleaner separation of concerns.
@@ -119,10 +126,23 @@ def run_experiment(args:dict):
             GenerationArguments, TuneArguments)
         )
     
-    model_args, data_args, training_args, gen_args, tune_args = parser.parse_dict(args)
+    model_args, data_args, training_args, gen_args, tune_args = parser.parse_dict(settings)
 
-    # upload to wandb
-    wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=training_args.run_name)
+    if sweep:
+        ## Wandb sweep integration. 
+        wandb.init(project="w266-fp-spot_petl", entity="w266_wra", config=settings)
+        config = wandb.config
+        for item in config.items():
+            wandb_key = item[0]
+            wandb_val = item[1]
+            if wandb_key in settings.keys():
+                settings[wandb_key] = wandb_val
+            else:
+                settings.update({wandb_key: wandb_val})
+            print(f"Sweep Argument Check:\n{settings[wandb_key]}")
+    else:
+        # upload to wandb
+        wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=training_args.run_name)
 
     # Setup logging
     logging.basicConfig(
@@ -543,5 +563,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train a petl model")
     parser.add_argument('--file', help='json file with all arguments', type=str)
     parser.add_argument('--debug', help='Bool for debug mode', default=False, type=bool)
+    parser.add_argument('--sweep', help= 'Bool for WandB sweep', default=False, type=bool)
     args = parser.parse_args()
     main(args)
