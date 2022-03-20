@@ -29,6 +29,7 @@ import argparse
 from dataclasses import dataclass, field
 from typing import Optional
 from datetime import datetime
+from utilities import CopyCheckpointFolder
 
 import nltk
 import numpy as np
@@ -128,6 +129,12 @@ def run_experiment(settings:dict, sweep:bool):
     
     model_args, data_args, training_args, gen_args, tune_args = parser.parse_dict(settings)
 
+    # copy the checkpoint folder to the output_dir and delete unnecasarry files
+    if training_args.resume_from_checkpoint is not None:
+        training_args.resume_from_checkpoint=CopyCheckpointFolder(
+                                    training_args.resume_from_checkpoint,
+                                    training_args.output_dir)
+
     if sweep:
         ## Wandb sweep integration. 
         wandb.init(project="w266-fp-spot_petl", entity="w266_wra", config=settings)
@@ -145,10 +152,11 @@ def run_experiment(settings:dict, sweep:bool):
         wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=training_args.run_name)
 
     # Setup logging
+    loggingfilename=training_args.output_dir+'/log.txt'
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
         datefmt="%m/%d/%Y %H:%M:%S",
-        handlers=[logging.StreamHandler(sys.stdout)],
+        handlers=[logging.StreamHandler(sys.stdout),logging.FileHandler(loggingfilename)],
     )
     logger.setLevel(logging.INFO if training_args.should_log else logging.WARN)
 
@@ -512,6 +520,27 @@ def run_experiment(settings:dict, sweep:bool):
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
 
+    # predict_eval data for metric confirmation
+        predict_results = trainer.predict(
+            eval_dataset,
+            metric_key_prefix="eval",
+            max_length=data_args.val_max_target_length,
+            num_beams=gen_args.num_beams,
+        )
+        if trainer.is_world_process_zero():
+            if training_args.predict_with_generate:
+                predictions = tokenizer.batch_decode(
+                    predict_results.predictions, skip_special_tokens=True, clean_up_tokenization_spaces=True
+                )
+                predictions = [pred.strip() for pred in predictions]
+                # output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
+                # with open(output_prediction_file, "w") as writer:
+                #     writer.write("\n".join(predictions))
+                
+                output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_eval.txt")
+                with open(output_prediction_file, "w") as writer:
+                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(predict_dataset['idx'],predictions)]))
+
     if training_args.do_predict:
         gen_prefix = "test"
         logger.info("*** Predict ***")
@@ -537,9 +566,9 @@ def run_experiment(settings:dict, sweep:bool):
                     predict_results.predictions, skip_special_tokens=True, clean_up_tokenization_spaces=True
                 )
                 predictions = [pred.strip() for pred in predictions]
-                output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
-                with open(output_prediction_file, "w") as writer:
-                    writer.write("\n".join(predictions))
+                # output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
+                # with open(output_prediction_file, "w") as writer:
+                #     writer.write("\n".join(predictions))
                 
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_submission.txt")
                 with open(output_prediction_file, "w") as writer:

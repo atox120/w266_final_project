@@ -24,7 +24,9 @@ def CopyCheckpointFolder(resume_from_checkpoint,output_directory):
     #remove the optimizer, scheduler and trainer_state
 
     for i in ['optimizer.pt','scheduler.pt','trainer_state.json']:
-        os.remove(f"{new_resume_from_checkpoint}/{i}")
+        file_to_remove=f"{new_resume_from_checkpoint}/{i}"
+        if os.path.exists(file_to_remove):
+            os.remove(file_to_remove)
 
     
     return new_resume_from_checkpoint
