@@ -153,6 +153,10 @@ def run_experiment(settings:dict, sweep:bool):
 
     # Setup logging
     loggingfilename=training_args.output_dir+'/log.txt'
+
+    if os.path.isfile(loggingfilename)==False:
+        os.mkdir(training_args.output_dir)
+        
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
         datefmt="%m/%d/%Y %H:%M:%S",
