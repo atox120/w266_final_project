@@ -29,7 +29,7 @@ import argparse
 from dataclasses import dataclass, field
 from typing import Optional
 from datetime import datetime
-from utilities import CopyCheckpointFolder
+from utilities import CopyCheckpointFolder,MultircFinalMetric,squad
 
 import nltk
 import numpy as np
@@ -354,6 +354,14 @@ def run_experiment(settings:dict, sweep:bool):
 
         model_inputs["labels"] = labels["input_ids"]
         model_inputs['idx']= examples[idx_column]
+        model_inputs['original_target']=targets
+        
+        if data_args.dataset_name=='stjokerli/TextToText_record_seqio':
+            model_inputs['answers']=examples["answers"]
+            
+        elif data_args.dataset_name=='stjokerli/TextToText_multirc_seqio':
+            model_inputs['group_idx']=[i.split("-")[1] for i in examples["idx"]]
+
         return model_inputs
 
     if training_args.do_train:
@@ -543,7 +551,20 @@ def run_experiment(settings:dict, sweep:bool):
                 
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_eval.txt")
                 with open(output_prediction_file, "w") as writer:
-                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(predict_dataset['idx'],predictions)]))
+                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(eval_dataset['idx'],predictions)]))
+    
+    if data_args.dataset_name=='stjokerli/TextToText_record_seqio':
+
+            final_eval_Score=squad(eval_dataset['answers'],predictions)
+            wandb.log(final_eval_Score)
+
+    elif data_args.dataset_name=='stjokerli/TextToText_multirc_seqio':
+            
+            final_eval_Score=MultircFinalMetric(eval_dataset,predictions)
+            wandb.log(final_eval_Score)
+
+        # elif data_args.dataset_name=='stjokerli/TextToText_scv_seqio':
+        #     final_eval_Score=squad(,predictions)
 
     if training_args.do_predict:
         gen_prefix = "test"
@@ -576,7 +597,7 @@ def run_experiment(settings:dict, sweep:bool):
                 
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_submission.txt")
                 with open(output_prediction_file, "w") as writer:
-                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(predict_dataset['idx'],predictions)]))
+                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(predict_dataset['idx'],predictions)]))      
 
     if training_args.push_to_hub:
         kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "summarization"}
