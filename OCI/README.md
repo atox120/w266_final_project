@@ -4,14 +4,15 @@
 
 Access via the ssh key is in a terminal. Note this assumes that the .key file is in the working directory. 
 '''bash
-ssh -i ssh-key-2022-02-02.key ubuntu@132.145.146.4
+ssh -i ssh-key-GPU.key ubuntu@168.138.21.187
 '''
-Don't forget to have the permissions on the key set via:
+Don't forget to have the read permissions on the key set via:
 
 ```bash
-chmod 400 ssh-key-2022-02-02.key
+chmod 400 ssh-key-GPU.key
 ```
-## Volume Access
+
+## Optional - Volume Access
 
 Mount the volume as follows:
 ```bash
@@ -19,4 +20,4 @@ sudo iscsiadm -m node -o new -T iqn.2015-12.com.oracleiaas:61329e5f-3c77-44e8-a9
 sudo iscsiadm -m node -o update -T iqn.2015-12.com.oracleiaas:61329e5f-3c77-44e8-a9b0-bbb5531217f4 -n 
 ```
 
-The volume is accesible viahome/ubuntu/work my thinking is that we can donwload the datasets into here, to save us always having to download that again and again. 
+The volume is accesible viahome/ubuntu/work.
