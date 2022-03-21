@@ -154,8 +154,8 @@ def run_experiment(settings:dict, sweep:bool):
     # Setup logging
     loggingfilename=training_args.output_dir+'/log.txt'
 
-    if os.path.isfile(loggingfilename)==False:
-        os.mkdir(training_args.output_dir)
+    if not os.path.isdir(training_args.output_dir)==False:
+        os.makedirs(training_args.output_dir, exist_ok=True)
         
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
