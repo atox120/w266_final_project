@@ -1,5 +1,5 @@
 # NVIDIA Pytorch Base Container
-FROM nvcr.io/nvidia/pytorch:22.01-py3
+FROM nvcr.io/nvidia/pytorch:22.02-py3
 
 # Update apt and pip
 RUN apt update
