@@ -3,9 +3,11 @@
 ## Cloud Access
 
 Access via the ssh key is in a terminal. Note this assumes that the .key file is in the working directory. 
-'''bash
+
+```bash
 ssh -i ssh-key-GPU.key ubuntu@168.138.21.187
-'''
+```
+
 Don't forget to have the read permissions on the key set via:
 
 ```bash
