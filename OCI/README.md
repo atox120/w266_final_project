@@ -1,6 +1,4 @@
-# w266_final_project
-
-## Cloud Access
+# w266_final_project - Cloud Access
 
 Access via the ssh key is in a terminal. Note this assumes that the .key file is in the working directory. 
 
