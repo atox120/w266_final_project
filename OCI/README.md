@@ -53,7 +53,7 @@ Port designation:
 The container is prebuilt using the dockerfile in src/Dockerfile. The image name is `atox120/w266_fp_torch:v2`. To run the container please use the following command:
 
 ```bash
-docker run -it --rm -v /home/ubuntu/<your_username>:/workspace/w266_final_project -p <your_designated_port>:8888 --gpus=all atox120/w266_fp_torch:v2
+docker run -it --rm -v /home/ubuntu/<your_username>/w266_final_project/:/workspace/w266_final_project -p <your_designated_port>:8888 --gpus=all atox120/w266_fp_torch:v2
 ```
 note to change your designated port and and username. Now you should be inside the container and see your work space set up and run the command:
 
