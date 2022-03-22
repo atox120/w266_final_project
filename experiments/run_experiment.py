@@ -159,7 +159,7 @@ def run_experiment(settings:dict):
     # Setup logging
     loggingfilename=training_args.output_dir+'/log.txt'
 
-    if not os.path.isdir(training_args.output_dir)==False:
+    if not os.path.isdir(training_args.output_dir):
         os.makedirs(training_args.output_dir, exist_ok=True)
         
     logging.basicConfig(
