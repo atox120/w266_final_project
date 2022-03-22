@@ -98,7 +98,7 @@ def main(args):
     if args.sweep:
 
         ## Wandb sweep integration. 
-        wandb.init(project="w266-fp-spot_petl", entity="w266_wra", config=settings)
+        wandb.init(project="target_baselines", entity="w266_wra", config=settings)
         config = wandb.config
         for item in config.items():
             wandb_key = item[0]
@@ -116,10 +116,11 @@ def main(args):
 
     else:
         # upload to wandb
-        wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=settings['run_name'])
+        wandb.init(project="target_baselines", entity="w266_wra",name=settings['run_name'])
 
     if args.debug:
         
+        print('Running Debug')
         settings['debug_max_train_samples'] = 300
         settings['train_batch_size'] = 4
         settings['gradient_accumulation_step'] = 1
