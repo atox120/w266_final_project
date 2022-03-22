@@ -1,9 +1,22 @@
 # How To run the experiments
 
 ```python
-python run_experiment.py --file run_settings/example.json --debug True
+python run_experiment.py --file run_settings/example.json --debug True --sweep True
 ```
 Note that you have to change the `dataset_name`, `run_name` and `output_dir` accordingly to avoid overwriting in checkpoints.
+
+Note that debug and sweep argument is set default as False
+
+So this two chunk has same effects
+
+```python
+python run_experiment.py --file run_settings/example.json  --sweep False
+```
+
+```python
+python run_experiment.py --file run_settings/example.json --debug False
+```
+
 
 # How to do the source learning
 

@@ -95,7 +95,7 @@ column_mapping = {
 def main(args):
     settings = load_settings(args.file)
 
-    if args.sweep:
+    if args.sweep == 'True':
 
         ## Wandb sweep integration. 
         wandb.init(project="target_baselines", entity="w266_wra", config=settings)
@@ -118,7 +118,7 @@ def main(args):
         # upload to wandb
         wandb.init(project="target_baselines", entity="w266_wra",name=settings['run_name'])
 
-    if args.debug:
+    if args.debug == 'True':
         
         print('Running Debug')
         settings['debug_max_train_samples'] = 300
@@ -622,7 +622,7 @@ def run_experiment(settings:dict):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train a petl model")
     parser.add_argument('--file', help='json file with all arguments', type=str)
-    parser.add_argument('--debug', help='Bool for debug mode', default=False, type=bool)
-    parser.add_argument('--sweep', help= 'Bool for WandB sweep', default=False, type=bool)
+    parser.add_argument('--debug', help='Ture/False for debug mode', default="False", type=str)
+    parser.add_argument('--sweep', help= 'Ture/False for WandB sweep', default="False", type=str)
     args = parser.parse_args()
     main(args)
