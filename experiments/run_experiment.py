@@ -94,7 +94,32 @@ column_mapping = {
         
 def main(args):
     settings = load_settings(args.file)
+
+    if args.sweep:
+
+        ## Wandb sweep integration. 
+        wandb.init(project="w266-fp-spot_petl", entity="w266_wra", config=settings)
+        config = wandb.config
+        for item in config.items():
+            wandb_key = item[0]
+            wandb_val = item[1]
+            if wandb_key in settings.keys():
+                settings[wandb_key] = wandb_val
+            else:
+                settings.update({wandb_key: wandb_val})
+            print(f"Sweep Argument Check: {wandb_key}: {settings[wandb_key]}\n")
+
+        #Get time for unique folder
+        run_start = datetime.now()
+        start_time = run_start.strftime("%Y%b%d_%H%M%S")
+        settings['output_dir'] = settings['output_dir']+f"/{start_time}"
+
+    else:
+        # upload to wandb
+        wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=settings['run_name'])
+
     if args.debug:
+        
         settings['debug_max_train_samples'] = 300
         settings['train_batch_size'] = 4
         settings['gradient_accumulation_step'] = 1
@@ -102,22 +127,16 @@ def main(args):
         settings['eval_batch_size'] = 16
         settings['max_eval_samples'] = 100
         settings['eval_batch_size'] = 16
-        settings['save_steps'] = 50 
-    
-    if args.sweep:
-        #Get time for unique folder
-        run_start = datetime.now()
-        start_time = run_start.strftime("%Y%b%d_%H%M%S")
-        settings['output_dir'] = settings['output_dir']+f"/{start_time}"
-    
-    run_experiment(settings, args.sweep)
+        settings['eval_steps'] = 50 
+
+    run_experiment(settings)
 
 def load_settings(file):
     with open(file, 'r') as f:
         settings = json.load(f)
     return settings
 
-def run_experiment(settings:dict, sweep:bool):
+def run_experiment(settings:dict):
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
     # We now keep distinct sets of args, for a cleaner separation of concerns.
@@ -135,21 +154,7 @@ def run_experiment(settings:dict, sweep:bool):
                                     training_args.resume_from_checkpoint,
                                     training_args.output_dir)
 
-    if sweep:
-        ## Wandb sweep integration. 
-        wandb.init(project="w266-fp-spot_petl", entity="w266_wra", config=settings)
-        config = wandb.config
-        for item in config.items():
-            wandb_key = item[0]
-            wandb_val = item[1]
-            if wandb_key in settings.keys():
-                settings[wandb_key] = wandb_val
-            else:
-                settings.update({wandb_key: wandb_val})
-            print(f"Sweep Argument Check:\n{settings[wandb_key]}")
-    else:
-        # upload to wandb
-        wandb.init(project="w266-fp-spot_petl", entity="w266_wra",name=training_args.run_name)
+
 
     # Setup logging
     loggingfilename=training_args.output_dir+'/log.txt'

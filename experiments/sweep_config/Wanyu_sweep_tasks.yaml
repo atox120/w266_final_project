@@ -1,0 +1,36 @@
+project: 'Wanyu_sweep'
+program: run_experiment.py
+name: "Wanyu_sweep_MNLI_prefix_bn_50_tasks_10k"
+description: "sweep on target task transfer learning basing on prefix bn 50, max step 10 k"
+command:
+- ${env}
+- ${interpreter}
+- ${program}
+- --file
+- run_settings/Prefix_bn50_target_tasks/Wanyu_mnli_prefix_bn50_boolq.json
+- --sweep
+- True
+method: grid
+metric:
+  goal: maximize
+  name: eval/accuracy
+parameters:
+  dataset_name: 
+    distribution: categorical
+    values:
+    - "stjokerli/TextToText_boolq_seqio"
+    - "stjokerli/TextToText_cb_seqio"
+    - "stjokerli/TextToText_copa_seqio"
+    - "stjokerli/TextToText_multirc_seqio"
+    - "stjokerli/TextToText_record_seqio"
+    - "stjokerli/TextToText_rte_seqio"
+    - "stjokerli/TextToText_wic_seqio"
+    - "stjokerli/TextToText_wsc_seqio"
+  max_steps: 
+    value: 10000
+  save_steps:
+    value:  200
+  eval_steps:
+    value:  200
+  output_dir:
+    value:  "/workspace/w266_final_project/model_checkpoints/Prefix_bn50_target_tasks_sweep/"
