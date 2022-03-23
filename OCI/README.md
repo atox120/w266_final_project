@@ -60,7 +60,7 @@ note to change your designated port and and username. Now you should be inside t
 ```bash
 jupyter-lab --allow-root
 ```
-You can connect to the notebook server at 168.138.21.187:<your_designated_port>
+You can connect to the notebook server at 130.162.195.229:<your_designated_port>
 
 Don't forget to login to wandb and you're good to go! 
 
