@@ -112,7 +112,7 @@ def main(args):
         #Get time for unique folder
         run_start = datetime.now()
         start_time = run_start.strftime("%Y%b%d_%H%M%S")
-        settings['output_dir'] = settings['output_dir']+f"/{start_time}"
+        settings['output_dir'] = settings['output_dir']+f"/{wandb.run.name}_{wandb.run.id}_{start_time}"
 
     else:
         # upload to wandb
@@ -180,6 +180,8 @@ def run_experiment(settings:dict):
         transformers.utils.logging.set_verbosity_info()
     logger.info(f"Training/evaluation parameters {training_args}")
 
+    #log settings
+    logger.warning(f"all settings in this run:\n{settings}\n")
 
     # Detecting last checkpoint.
     last_checkpoint = None

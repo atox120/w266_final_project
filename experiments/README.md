@@ -1,13 +1,19 @@
-# How To run the experiments
+# How To run the experiments/sweeps
 
+* for single experiment run
 ```python
-python run_experiment.py --file run_settings/example.json --debug True --sweep True
+python run_experiment.py --file run_settings/example.json --debug True --sweep False
 ```
 Note that you have to change the `dataset_name`, `run_name` and `output_dir` accordingly to avoid overwriting in checkpoints.
 
+* for sweep run
+```python
+python run_experiment.py --file sweep_config/sweep_template.yaml --debug True --sweep True
+```
+
 Note that debug and sweep argument is set default as False
 
-So this two chunk has same effects
+So this two chunk has same effects (no debug no sweep)
 
 ```python
 python run_experiment.py --file run_settings/example.json  --sweep False
@@ -74,6 +80,27 @@ Note that for transfer learning the following PETL Params should be exactly the 
     "ffn_adapter_init_option":"lora"
     "ffn_bn":512
 ```
+
+# Folder name in sweep mode
+
+Wandb `run name` and `id` will be assigned alone with `starting time stamp` in that trail as the folder name for easy indexing.
+
+```
+flowing-sweep-8_a7km6w7j_2022Mar23_002833
+
+RunName_RunId_TimeStamp
+```
+
+# Log.txt in the checkpoint folder
+
+All settings and wandb results are saved in `log.txt` file inside of checkpoint folder for back tracking.
+
+```python
+03/23/2022 00:29:41 - WARNING - __main__ -   all settings in this run:
+{'dataset_name': 'stjokerli/TextToText_wsc_seqio', 'model_name_or_path': '/works...}
+```
+
+In worst case, the run could be replicate by the information saved in `log.txt`
 
 # How set-up json file in batch.
 
