@@ -95,7 +95,7 @@ column_mapping = {
 def main(args):
     settings = load_settings(args.file)
 
-    if args.sweep:
+    if args.sweep == 'True':
 
         ## Wandb sweep integration. 
         wandb.init(project="target_baselines", entity="w266_wra", config=settings)
@@ -112,13 +112,13 @@ def main(args):
         #Get time for unique folder
         run_start = datetime.now()
         start_time = run_start.strftime("%Y%b%d_%H%M%S")
-        settings['output_dir'] = settings['output_dir']+f"/{start_time}"
+        settings['output_dir'] = settings['output_dir']+f"/{wandb.run.name}_{wandb.run.id}_{start_time}"
 
     else:
         # upload to wandb
         wandb.init(project="target_baselines", entity="w266_wra",name=settings['run_name'])
 
-    if args.debug:
+    if args.debug == 'True':
         
         print('Running Debug')
         settings['debug_max_train_samples'] = 1000
@@ -180,6 +180,8 @@ def run_experiment(settings:dict):
         transformers.utils.logging.set_verbosity_info()
     logger.info(f"Training/evaluation parameters {training_args}")
 
+    #log settings
+    logger.warning(f"all settings in this run:\n{settings}\n")
 
     # Detecting last checkpoint.
     last_checkpoint = None
@@ -622,7 +624,7 @@ def run_experiment(settings:dict):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train a petl model")
     parser.add_argument('--file', help='json file with all arguments', type=str)
-    parser.add_argument('--debug', help='Bool for debug mode', default=False, type=bool)
-    parser.add_argument('--sweep', help= 'Bool for WandB sweep', default=False, type=bool)
+    parser.add_argument('--debug', help='Ture/False for debug mode', default="False", type=str)
+    parser.add_argument('--sweep', help= 'Ture/False for WandB sweep', default="False", type=str)
     args = parser.parse_args()
     main(args)

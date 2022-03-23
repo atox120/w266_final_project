@@ -3,13 +3,13 @@
 Access via the ssh key is in a terminal. Note this assumes that the .key file is in the working directory. 
 
 ```bash
-ssh -i ssh-key-GPU.key ubuntu@168.138.21.187
+ssh -i <ssh-key-file>.key ubuntu@130.162.195.229
 ```
 
 Don't forget to have the read permissions on the key set via:
 
 ```bash
-chmod 400 ssh-key-GPU.key
+chmod 400 <ssh-key-file>.key
 ```
 
 ## Usage
@@ -60,7 +60,7 @@ note to change your designated port and and username. Now you should be inside t
 ```bash
 jupyter-lab --allow-root
 ```
-You can connect to the notebook server at 168.138.21.187:<your_designated_port>
+You can connect to the notebook server at 130.162.195.229:<your_designated_port>
 
 Don't forget to login to wandb and you're good to go! 
 
