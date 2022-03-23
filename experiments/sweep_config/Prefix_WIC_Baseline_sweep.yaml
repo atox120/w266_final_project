@@ -6,6 +6,8 @@ command:
   - ${program}
   - "--file"
   - "run_settings/Prefix_Target_baseline_wic.json"
+  - "--debug"
+  - "True"
   - "--sweep"
   - "True"
 method: bayes

@@ -121,14 +121,14 @@ def main(args):
     if args.debug:
         
         print('Running Debug')
-        settings['debug_max_train_samples'] = 300
-        settings['train_batch_size'] = 4
+        settings['debug_max_train_samples'] = 1000
+        settings['train_batch_size'] = 32
         settings['gradient_accumulation_step'] = 1
-        settings['max_steps'] = 250
-        settings['eval_batch_size'] = 16
-        settings['max_eval_samples'] = 100
-        settings['eval_batch_size'] = 16
-        settings['eval_steps'] = 50 
+        settings['max_steps'] = 4000
+        settings['eval_batch_size'] = 32
+        settings['max_eval_samples'] = 200
+        settings['eval_batch_size'] = 32
+        settings['eval_steps'] = 100 
 
     run_experiment(settings)
 

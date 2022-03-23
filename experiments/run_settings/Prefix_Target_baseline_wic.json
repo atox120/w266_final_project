@@ -46,7 +46,7 @@
     "eval_steps": 500,
     "load_best_model_at_end": true,
     "report_to": "wandb",
-    "run_name": "Prefix_baseline_wic",
+    "run_name": "Prefix_baseline_wic_debug",
     "overwrite_output_dir": true,
     "disable_tqdm": true,
     "metric_for_best_model": "accuracy",
