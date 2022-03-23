@@ -3,7 +3,7 @@
 Access via the ssh key is in a terminal. Note this assumes that the .key file is in the working directory. 
 
 ```bash
-ssh -i <ssh-key-file>.key ubuntu@130.162.195.229
+ssh -i <ssh-key-file>.key ubuntu@140.238.195.1
 ```
 
 Don't forget to have the read permissions on the key set via:
@@ -53,14 +53,14 @@ Port designation:
 The container is prebuilt using the dockerfile in src/Dockerfile. The image name is `atox120/w266_fp_torch:v2`. To run the container please use the following command:
 
 ```bash
-docker run -it --rm -v /home/ubuntu/<your_username>/w266_final_project/:/workspace/w266_final_project -p <your_designated_port>:8888 --gpus=all atox120/w266_fp_torch:v2
+sudo docker run -it --ipc=host --rm -v /home/ubuntu/<your_username>/w266_final_project/:/workspace/w266_final_project -p <your_designated_port>:8888 --gpus=all atox120/w266_fp_torch:v2
 ```
 note to change your designated port and and username. Now you should be inside the container and see your work space set up and run the command:
 
 ```bash
 jupyter-lab --allow-root
 ```
-You can connect to the notebook server at 130.162.195.229:<your_designated_port>
+You can connect to the notebook server at 140.238.195.1:<your_designated_port>
 
 Don't forget to login to wandb and you're good to go! 
 
