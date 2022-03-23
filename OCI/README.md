@@ -3,13 +3,13 @@
 Access via the ssh key is in a terminal. Note this assumes that the .key file is in the working directory. 
 
 ```bash
-ssh -i ssh-key-GPU.key ubuntu@168.138.21.187
+ssh -i <ssh-key-file>.key ubuntu@130.162.195.229
 ```
 
 Don't forget to have the read permissions on the key set via:
 
 ```bash
-chmod 400 ssh-key-GPU.key
+chmod 400 <ssh-key-file>.key
 ```
 
 ## Usage
