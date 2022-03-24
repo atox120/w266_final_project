@@ -5,7 +5,7 @@
 cd /workspace/w266_final_project/
 
 # run each individial experiments
-python offical_experiments/Prefix_target_tunning/bench_marks/Prefix_bench_marks_record.json
+python run_experiment.py --file offical_experiments/Prefix_target_tunning/bench_marks/Prefix_bench_marks_record.json
 ```
 
 
