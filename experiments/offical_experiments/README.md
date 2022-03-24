@@ -1,3 +1,13 @@
+# Run the experiment
+
+```bash
+# into the folder
+cd /workspace/w266_final_project/
+
+# run each individial experiments
+python offical_experiments/Prefix_target_tunning/bench_marks/Prefix_bench_marks_record.json
+```
+
 
 # Official Experiment Folder
 
@@ -82,3 +92,7 @@ Write your name in the spread sheet for the tasks you are working on, and replea
 https://docs.google.com/spreadsheets/d/1aCKzmVC5bDmLAJwrqf2QncF5rGhpIK9zW8sFluIjGC0/edit#gid=1011211708
 
 Benchmark and transferlearning on same task are highly recommended.
+
+# Wandb Repo
+
+All the runs will go to the same project `https://wandb.ai/w266_wra/Official_experiment`.
