@@ -98,7 +98,7 @@ def main(args):
     if args.sweep == 'True':
 
         ## Wandb sweep integration. 
-        wandb.init(, entity="w266_wra", config=settings)
+        wandb.init( entity="w266_wra", config=settings)
         config = wandb.config
         for item in config.items():
             wandb_key = item[0]
