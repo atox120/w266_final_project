@@ -98,7 +98,7 @@ def main(args):
     if args.sweep == 'True':
 
         ## Wandb sweep integration. 
-        wandb.init(project="target_baselines", entity="w266_wra", config=settings)
+        wandb.init(, entity="w266_wra", config=settings)
         config = wandb.config
         for item in config.items():
             wandb_key = item[0]
@@ -116,7 +116,7 @@ def main(args):
 
     else:
         # upload to wandb
-        wandb.init(project="target_baselines", entity="w266_wra",name=settings['run_name'])
+        wandb.init(project=settings.get('project','w266-fp-spot_petl'), entity="w266_wra",name=settings['run_name'])
 
     if args.debug == 'True':
         
@@ -127,8 +127,18 @@ def main(args):
         settings['max_steps'] = 4000
         settings['eval_batch_size'] = 32
         settings['max_eval_samples'] = 200
-        settings['eval_batch_size'] = 32
         settings['eval_steps'] = 100 
+
+    if args.debug in ['short','Short']:
+        
+        print('Running short Debug')
+        settings['debug_max_train_samples'] = 1000
+        settings['train_batch_size'] = 16
+        settings['gradient_accumulation_step'] = 1
+        settings['max_steps'] = 400
+        settings['eval_batch_size'] = 16
+        settings['max_eval_samples'] = 200
+        settings['eval_steps'] = 200 
 
     run_experiment(settings)
 

@@ -23,6 +23,33 @@ python run_experiment.py --file run_settings/example.json  --sweep False
 python run_experiment.py --file run_settings/example.json --debug False
 ```
 
+# Debug Mode
+
+The training parameters will be change if the debug argument is set as below
+
+* True
+```python
+        print('Running Debug')
+        settings['debug_max_train_samples'] = 1000
+        settings['train_batch_size'] = 32
+        settings['gradient_accumulation_step'] = 1
+        settings['max_steps'] = 4000
+        settings['eval_batch_size'] = 32
+        settings['max_eval_samples'] = 200
+        settings['eval_steps'] = 100 
+```
+
+* short/Short
+```python
+        print('short Debug')
+        settings['debug_max_train_samples'] = 1000
+        settings['train_batch_size'] = 16
+        settings['gradient_accumulation_step'] = 1
+        settings['max_steps'] = 400
+        settings['eval_batch_size'] = 16
+        settings['max_eval_samples'] = 200
+        settings['eval_steps'] = 200 
+```
 
 # How to do the source learning
 
