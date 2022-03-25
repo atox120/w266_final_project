@@ -60,6 +60,35 @@ The training parameters will be change if the debug argument is set as below
 ```
 make sure it is `facebook/bart-large`, and do not set up any `load_path` or `resume_from_checkpoint` value in the json. Do not include the entry of `load_path` or `resume_from_checkpoint`)
 
+# How to continue from checkpoints
+
+In case the run crash in the middel.
+
+Add the following change the following settings in the Json File
+
+```Json
+    "resume_from_checkpoint": true,
+    "overwrite_output_dir": false,
+    "run_id": "3h1ov3ig" 
+```
+
+Note that   
+
+DO NOT CHANGE the `"output_dir"` where checkpoints are saved.
+
+* `"resume_from_checkpoint": true`
+
+this work the same no matter its a source tunning or a target tunning
+
+* `"run_id": "3h1ov3ig"`
+
+this is listed in the wandb run id column
+
+* `"overwrite_output_dir": false,`
+
+this must be false otherwise you will loss you previous checkpoints. (I did some integrating check to set it false if "resume_from_checkpoint" is true though)
+
+
 # How to do the transfer learing for target tasks
 
 modify the `.json` file with followings

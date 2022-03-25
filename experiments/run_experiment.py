@@ -116,7 +116,7 @@ def main(args):
 
     else:
         # upload to wandb
-        wandb.init(project=settings.get('project','w266-fp-spot_petl'), entity="w266_wra",name=settings['run_name'])
+        wandb.init(id=settings.get('run_id',None), resume="allow",name=settings.get('run_name',None),project=settings.get('project','w266-fp-spot_petl'), entity="w266_wra")
 
     if args.debug == 'True':
         
@@ -161,11 +161,21 @@ def run_experiment(settings:dict):
 
     # copy the checkpoint folder to the output_dir and delete unnecasarry files
     if training_args.resume_from_checkpoint is not None:
-        training_args.resume_from_checkpoint=CopyCheckpointFolder(
-                                    training_args.resume_from_checkpoint,
-                                    training_args.output_dir)
+        if os.path.isdir(training_args.resume_from_checkpoint):
+            training_args.resume_from_checkpoint=CopyCheckpointFolder(
+                                        training_args.resume_from_checkpoint,
+                                        training_args.output_dir)
 
+    if training_args.resume_from_checkpoint == True:
+        
+        logger.info(f"run_id set as {settings.get('run_id',None)}")
+        # run_id need to be specified to continue the run.
+        assert settings.get('run_id',None) is not None , logger.error("run_id need to be specify if resume_from_checkpoint == True")
 
+        logger.info("overwrite_output_dir set to be False since resume_from_checkpoint == True") 
+        if training_args.overwrite_output_dir ==True:
+            training_args.overwrite_output_dir =False
+        
 
     # Setup logging
     loggingfilename=training_args.output_dir+'/log.txt'
