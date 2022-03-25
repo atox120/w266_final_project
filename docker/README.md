@@ -6,7 +6,7 @@ sudo docker build -f Dockerfile_torch -t rbector/w266-final-project:latest .
 ```
 2. To run docker image on cpu device:
 ```bash
-sudo docker run -it --rm -v /home/ubuntu/w266_final_project:/workspace/w266_final_project -p 8888:8888 --gpus=all rbector/w266-final-project:latest
+sudo docker run -it -v /home/ubuntu/w266_final_project:/workspace/w266_final_project -p 8888:8888 --gpus=all rbector/w266-final-project:latest
 ```
 
 ## Tensorflow
