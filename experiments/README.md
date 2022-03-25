@@ -82,7 +82,7 @@ this work the same no matter its a source tunning or a target tunning
 
 * `"run_id": "3h1ov3ig"`
 
-this is listed in the wandb run id column
+this is listed in the wandb run id column. You have to input this to resume from checkpoint. this will continue your run in wandb as well.
 
 * `"overwrite_output_dir": false,`
 
