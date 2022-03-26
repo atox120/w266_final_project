@@ -96,3 +96,22 @@ Benchmark and transferlearning on same task are highly recommended.
 # Wandb Repo
 
 All the runs will go to the same project `https://wandb.ai/w266_wra/Official_experiment`.
+
+
+# Save the prediction results
+
+Please save the `generated_predictions_for_submission.txt` folder in google drive below into corresponding folder
+
+`https://drive.google.com/drive/folders/1bxmG2nwM3r2Hmm6Q7BqrS1gMtquykVqL`
+
+Please name it with the same name of your run (e.g. Prefix_transfer_learning_wsc.txt)
+
+# For prompt tunning frame work
+
+Please comment out the #L185-L186 in unify-parameter-efficient-tuning/src/transformers/models/bart/modeling_bart.py.
+
+```ptyhon
+    # elif self.attn_mode != 'none':
+    #     raise ValueError("att_mode not supported")
+
+```
