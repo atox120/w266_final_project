@@ -159,9 +159,12 @@ def run_experiment(settings:dict):
     
     model_args, data_args, training_args, gen_args, tune_args = parser.parse_dict(settings)
 
-    # copy the checkpoint folder to the output_dir and delete unnecasarry files
     if training_args.resume_from_checkpoint is not None:
-        if os.path.isdir(training_args.resume_from_checkpoint):
+        # continue from crashed run
+        if training_args.resume_from_checkpoint==True:
+            pass
+        # transfer learning,copy the checkpoint folder to the output_dir and delete unnecasarry files
+        elif os.path.isdir(training_args.resume_from_checkpoint):
             training_args.resume_from_checkpoint=CopyCheckpointFolder(
                                         training_args.resume_from_checkpoint,
                                         training_args.output_dir)
