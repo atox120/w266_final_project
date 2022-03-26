@@ -8,24 +8,6 @@ sudo docker build -f Dockerfile_torch -t rbector/w266-final-project:latest .
 ```bash
 sudo docker run -it -v /home/ubuntu/w266_final_project:/workspace/w266_final_project -p 8888:8888 --gpus=all rbector/w266-final-project:latest
 ```
+## Dockerfiles:
 
-## Tensorflow
-
-Image based on the tensorflow 2.0 image (v22.01) from [nvidia container registry](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/tensorflow). It comes with some packages installed, see requirements.txt
-
-1. To build dockerimage
-```bash
-sudo docker build -f Dockerfile_tf -t <your_dockerhub_namespace>/w266-fp-tf2:<version> .
-```
-Locally i've tagged the image as ```atox120/w266-fp-tf2:latest``` and pushed it to dockerhub so you can also just pull the image from my namespace directly. 
-
-2. To run image
-```bash
-sudo docker run -it --rm -v /home/ubuntu/work:/workspace/work atox120/w266-fp-tf2:latest
-```
-with gpus and ports:
-```bash
-sudo docker run -it --rm -v /home/ubuntu/work:/workspace/work -p 8888:8888 --gpus=all atox120/w266-fp-tf2:latest
-
-```
-
+There are three docker files to build different images. The first is `Dockerfile_torch`, and was used to conduct all source tuning, target tuning and evaluation experiments. It consists of a clone of both the prompt tuning and PETL repositories. The dockerfile `Dockerfile_transformers` was used for baseline tuning. It simply contains a clone of the huggingface transformers repository, which was used as the repository for full fine-tuning BART on SuperGLUE tasks cast within the text-to-text framework. The third file is a deprecated tensorflow dockerfile. 
