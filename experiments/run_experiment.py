@@ -90,6 +90,9 @@ column_mapping = {
     "stjokerli/TextToText_record_seqio": ("inputs", "targets","idx"),
     "stjokerli/TextToText_wic_seqio": ("inputs", "targets","idx"),
     "stjokerli/TextToText_multirc_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_multirc_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_squad_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_DocNLI_seqio": ("inputs", "targets","idx"),
 }
         
 def main(args):
