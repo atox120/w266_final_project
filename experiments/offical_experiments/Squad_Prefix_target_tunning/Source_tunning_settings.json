@@ -29,7 +29,7 @@
     "max_grad_norm": 0.1,
     "max_length": 128,
     "max_source_length": 512,
-    "max_steps": 100000,
+    "max_steps": 260000,
     "max_target_length": 128,
     "metric_for_best_model": "accuracy",
     "mid_dim": 800,
