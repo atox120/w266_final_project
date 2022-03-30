@@ -90,6 +90,9 @@ column_mapping = {
     "stjokerli/TextToText_record_seqio": ("inputs", "targets","idx"),
     "stjokerli/TextToText_wic_seqio": ("inputs", "targets","idx"),
     "stjokerli/TextToText_multirc_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_multirc_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_squad_seqio": ("inputs", "targets","idx"),
+    "stjokerli/TextToText_DocNLI_seqio": ("inputs", "targets","idx"),
 }
         
 def main(args):
@@ -118,7 +121,7 @@ def main(args):
         # upload to wandb
         wandb.init(id=settings.get('run_id',None), resume="allow",name=settings.get('run_name',None),project=settings.get('project','w266-fp-spot_petl'), entity="w266_wra")
 
-    if args.debug == 'True':
+    if args.debug in ['True','true']:
         
         print('Running Debug')
         settings['debug_max_train_samples'] = 1000
@@ -387,6 +390,9 @@ def run_experiment(settings:dict):
         model_inputs['idx']= examples[idx_column]
         model_inputs['original_target']=targets
         
+        if data_args.dataset_name=='stjokerli/TextToText_squad_seqio':
+            model_inputs['answers']=targets
+
         if data_args.dataset_name=='stjokerli/TextToText_record_seqio':
             model_inputs['answers']=examples["answers"]
             
@@ -429,18 +435,21 @@ def run_experiment(settings:dict):
     if training_args.do_predict:
         max_target_length = data_args.val_max_target_length
         if "test" not in datasets:
-            raise ValueError("--do_predict requires a test dataset")
-        predict_dataset = datasets["test"]
-        if data_args.max_predict_samples is not None:
-            predict_dataset = predict_dataset.select(range(data_args.max_predict_samples))
-        predict_dataset = predict_dataset.map(
-            preprocess_function,
-            batched=True,
-            num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
-            load_from_cache_file=not data_args.overwrite_cache,
-            desc="Running tokenizer on prediction dataset",
-        )
+            # raise ValueError("--do_predict requires a test dataset")
+             logger.warning( "no test dataset found,--do_predict set to false")
+             training_args.do_predict=False
+        else:     
+            predict_dataset = datasets["test"]
+            if data_args.max_predict_samples is not None:
+                predict_dataset = predict_dataset.select(range(data_args.max_predict_samples))
+            predict_dataset = predict_dataset.map(
+                preprocess_function,
+                batched=True,
+                num_proc=data_args.preprocessing_num_workers,
+                remove_columns=column_names,
+                load_from_cache_file=not data_args.overwrite_cache,
+                desc="Running tokenizer on prediction dataset",
+            )
 
     # Data collator
     label_pad_token_id = -100 if data_args.ignore_pad_token_for_loss else tokenizer.pad_token_id
@@ -584,7 +593,7 @@ def run_experiment(settings:dict):
                 with open(output_prediction_file, "w") as writer:
                     writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(eval_dataset['idx'],predictions)]))
     
-    if data_args.dataset_name=='stjokerli/TextToText_record_seqio':
+    if data_args.dataset_name in ['stjokerli/TextToText_record_seqio','stjokerli/TextToText_squad_seqio']:
 
             final_eval_Score=squad(eval_dataset['answers'],predictions)
             wandb.log(final_eval_Score)
