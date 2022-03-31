@@ -1,0 +1,26 @@
+program: run_experiment.py
+name: "Mnli_Mam_bn200_Target_squad_transfer_benchmark"
+description: "sweep to debug"
+command:
+- ${env}
+- ${interpreter}
+- ${program}
+- --file
+- /workspace/w266_final_project/experiments/offical_experiments/Mnli_Mam_target_tunning_r1/bench_marks/Mnli_Mam_bench_marks_copa.json
+- --sweep
+- True
+method: grid
+metric:
+  goal: maximize
+  name: eval/accuracy
+parameters:
+  dataset_name: 
+    values:
+    - "stjokerli/TextToText_boolq_seqio"
+    - "stjokerli/TextToText_cb_seqio"
+    - "stjokerli/TextToText_copa_seqio"
+    - "stjokerli/TextToText_multirc_seqio"
+    - "stjokerli/TextToText_record_seqio"
+    - "stjokerli/TextToText_rte_seqio"
+    - "stjokerli/TextToText_wic_seqio"
+    - "stjokerli/TextToText_wsc_seqio"
