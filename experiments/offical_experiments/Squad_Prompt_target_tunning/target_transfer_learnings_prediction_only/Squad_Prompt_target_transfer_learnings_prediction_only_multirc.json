@@ -20,6 +20,7 @@
     "fp16": true,
     "gradient_accumulation_steps": 1,
     "greater_is_better": true,
+    "id": "any",
     "label_smoothing_factor": 0.05,
     "learning_rate": 5e-05,
     "load_best_model_at_end": true,
