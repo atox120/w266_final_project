@@ -6,9 +6,7 @@ command:
 - ${interpreter}
 - ${program}
 - --file
-- /workspace/w266_final_project/experiments/offical_experiments/Squad_Mam_target_tunning/target_transfer_learnings/Squad_Mam_target_transfer_learnings_wic.json
-- --debug
-- short
+- /workspace/w266_final_project/experiments/offical_experiments/Squad_Mam_target_tunning_r1/target_transfer_learnings/Squad_Mam_target_transfer_learnings_wic.json
 - --sweep
 - True
 method: grid
