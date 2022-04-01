@@ -7,7 +7,7 @@
     "dataset_name": "stjokerli/TextToText_boolq_seqio",
     "disable_tqdm": true,
     "do_eval": true,
-    "do_predict": false,
+    "do_predict": true,
     "do_train": true,
     "eval_steps": 1500,
     "evaluation_strategy": "steps",
