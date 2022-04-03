@@ -53,5 +53,8 @@
     "unfreeze_params": "ef_",
     "val_max_target_length": 10,
     "warmup_steps": 0,
-    "weight_decay": 0.01
+    "weight_decay": 0.01,
+    "resume_from_checkpoint": true,
+    "overwrite_output_dir": false,
+    "run_id": "3mo6ibzp"
 }
