@@ -40,8 +40,8 @@
     "num_train_epochs": 30,
     "output_dir": "/workspace/w266_final_project/model_checkpoints/offical_experiments_checkpoints/Mam_target_tunning/bench_marks/Mam_bench_marks_copa",
     "overwrite_output_dir": true,
-    "per_device_eval_batch_size": 16,
-    "per_device_train_batch_size": 16,
+    "per_device_eval_batch_size": 46,
+    "per_device_train_batch_size": 46,
     "predict_with_generate": true,
     "preprocessing_num_workers": 4,
     "project": "Official_experiment",
@@ -52,6 +52,6 @@
     "save_total_limit": 2,
     "unfreeze_params": "ef_",
     "val_max_target_length": 10,
-    "warmup_steps": 0,
+    "warmup_steps": 5000,
     "weight_decay": 0.01
 }
