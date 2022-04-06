@@ -1,0 +1,146 @@
+{"idx": 121, "label": "Muriel"}
+{"idx": 120, "label": "C Carpenter's poems"}
+{"idx": 35, "label": "the kitchen"}
+{"idx": 25, "label": "the cloth"}
+{"idx": 38, "label": "Nelly"}
+{"idx": 68, "label": "Mary"}
+{"idx": 87, "label": "Mr. Blyth"}
+{"idx": 79, "label": "Lev Kamenev"}
+{"idx": 16, "label": "the pain"}
+{"idx": 104, "label": "Arthur and Celeste"}
+{"idx": 135, "label": "a famous painting"}
+{"idx": 2, "label": "the trains"}
+{"idx": 19, "label": "Chameleon Street"}
+{"idx": 40, "label": "Maude"}
+{"idx": 113, "label": "Sally"}
+{"idx": 90, "label": "Mr. Blyth"}
+{"idx": 53, "label": "a soldier"}
+{"idx": 72, "label": "Paul"}
+{"idx": 73, "label": "Paul"}
+{"idx": 139, "label": "Theresa Rubio"}
+{"idx": 33, "label": "Bernard"}
+{"idx": 34, "label": "the kitchen"}
+{"idx": 31, "label": "Bernard"}
+{"idx": 131, "label": "Muriel"}
+{"idx": 47, "label": "Shakespeare"}
+{"idx": 43, "label": "David"}
+{"idx": 56, "label": "his hat"}
+{"idx": 23, "label": "Jackson administration"}
+{"idx": 106, "label": "The needy"}
+{"idx": 52, "label": "a soldier"}
+{"idx": 124, "label": "a ballerina"}
+{"idx": 29, "label": "Nell"}
+{"idx": 132, "label": "Muriel"}
+{"idx": 49, "label": "Mark"}
+{"idx": 37, "label": "Nelly"}
+{"idx": 136, "label": "a famous painting"}
+{"idx": 4, "label": "the trains"}
+{"idx": 115, "label": "Claire"}
+{"idx": 129, "label": "a ballerina"}
+{"idx": 27, "label": "the cloth"}
+{"idx": 126, "label": "a ballerina"}
+{"idx": 109, "label": "Dave"}
+{"idx": 95, "label": "Mr. Blyth"}
+{"idx": 6, "label": "Maude and Dora"}
+{"idx": 97, "label": "Mr. Blyth"}
+{"idx": 117, "label": "the traffic light"}
+{"idx": 86, "label": "Collins"}
+{"idx": 63, "label": "her floor"}
+{"idx": 5, "label": "the trains"}
+{"idx": 100, "label": "the incident"}
+{"idx": 96, "label": "Mr. Blyth"}
+{"idx": 110, "label": "Dave"}
+{"idx": 80, "label": "Lev Kamenev"}
+{"idx": 138, "label": "a famous painting"}
+{"idx": 125, "label": "a ballerina"}
+{"idx": 133, "label": "Muriel"}
+{"idx": 62, "label": "her floor"}
+{"idx": 14, "label": "Henry"}
+{"idx": 0, "label": "the trains"}
+{"idx": 20, "label": "Chameleon Street"}
+{"idx": 30, "label": "Bernard"}
+{"idx": 39, "label": "Maude"}
+{"idx": 119, "label": "C Carpenter's poems"}
+{"idx": 41, "label": "Maude"}
+{"idx": 26, "label": "the cloth"}
+{"idx": 22, "label": "Jackson administration"}
+{"idx": 140, "label": "Theresa Rubio"}
+{"idx": 57, "label": "his hat"}
+{"idx": 76, "label": "Lev Kamenev"}
+{"idx": 85, "label": "Collins"}
+{"idx": 122, "label": "Muriel"}
+{"idx": 89, "label": "Mr. Blyth"}
+{"idx": 105, "label": "Arthur and Celeste"}
+{"idx": 36, "label": "the kitchen"}
+{"idx": 1, "label": "the trains"}
+{"idx": 13, "label": "Dad"}
+{"idx": 44, "label": "Hermione"}
+{"idx": 83, "label": "Lev Kamenev"}
+{"idx": 91, "label": "Blyth"}
+{"idx": 103, "label": "the incident"}
+{"idx": 134, "label": "a famous painting"}
+{"idx": 55, "label": "his hat"}
+{"idx": 50, "label": "Mark"}
+{"idx": 108, "label": "Dave"}
+{"idx": 74, "label": "Paul"}
+{"idx": 71, "label": "Tatyana"}
+{"idx": 18, "label": "the pain"}
+{"idx": 130, "label": "Muriel"}
+{"idx": 10, "label": "Maude and Dora"}
+{"idx": 102, "label": "the incident"}
+{"idx": 127, "label": "a ballerina"}
+{"idx": 101, "label": "the incident"}
+{"idx": 42, "label": "David"}
+{"idx": 116, "label": "Claire"}
+{"idx": 67, "label": "Mrs. Wyman"}
+{"idx": 7, "label": "Maude and Dora"}
+{"idx": 143, "label": "Muriel"}
+{"idx": 94, "label": "Mr. Blyth"}
+{"idx": 92, "label": "Blyth"}
+{"idx": 141, "label": "Muriel"}
+{"idx": 51, "label": "Mark"}
+{"idx": 3, "label": "the trains"}
+{"idx": 48, "label": "Mark"}
+{"idx": 75, "label": "Lev Kamenev"}
+{"idx": 9, "label": "Maude and Dora"}
+{"idx": 45, "label": "Hermione"}
+{"idx": 78, "label": "Lev Kamenev"}
+{"idx": 15, "label": "Henry"}
+{"idx": 107, "label": "The needy"}
+{"idx": 84, "label": "Collins"}
+{"idx": 144, "label": "his window sill"}
+{"idx": 69, "label": "Mary"}
+{"idx": 81, "label": "Lev Kamenev"}
+{"idx": 114, "label": "Sally"}
+{"idx": 60, "label": "her mother"}
+{"idx": 77, "label": "Lev Kamenev"}
+{"idx": 123, "label": "Muriel"}
+{"idx": 70, "label": "Tatyana"}
+{"idx": 21, "label": "Jackson administration"}
+{"idx": 98, "label": "researchers"}
+{"idx": 128, "label": "a ballerina"}
+{"idx": 66, "label": "Mrs. Wyman"}
+{"idx": 17, "label": "the pain"}
+{"idx": 82, "label": "Lev Kamenev"}
+{"idx": 64, "label": "her floor"}
+{"idx": 145, "label": "his window sill"}
+{"idx": 54, "label": "a soldier"}
+{"idx": 142, "label": "Muriel"}
+{"idx": 11, "label": "Maude and Dora"}
+{"idx": 93, "label": "Mr. Blyth"}
+{"idx": 12, "label": "Dad"}
+{"idx": 32, "label": "Bernard"}
+{"idx": 137, "label": "a famous painting"}
+{"idx": 58, "label": "his hat"}
+{"idx": 46, "label": "Shakespeare"}
+{"idx": 112, "label": "Dave"}
+{"idx": 111, "label": "Dave"}
+{"idx": 99, "label": "researchers"}
+{"idx": 61, "label": "her floor"}
+{"idx": 59, "label": "her mother"}
+{"idx": 8, "label": "Maude and Dora"}
+{"idx": 118, "label": "the traffic light"}
+{"idx": 88, "label": "Mr. Blyth"}
+{"idx": 24, "label": "the cloth"}
+{"idx": 28, "label": "Nell"}
+{"idx": 65, "label": "Mrs. Wyman"}
