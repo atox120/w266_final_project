@@ -1,0 +1,13 @@
+PETL Method,Tuning Method,Tunable_Parameters,SuperGLUE Score
+Prefix,FT,3.7,69
+Prefix,SPoT-MNLI,3.7,74.3
+Prefix,SPoT-SQuAD,3.7,74
+Prompt,FT,0.03,51.1
+Prompt,SPoT-MNLI,0.03,64.7
+Prompt,SPoT-SQuAD,0.03,54.8
+MaM 30,FT,6.84,75.4
+MaM 30,SPoT-MNLI,6.84,73.4
+MaM 30,SPoT-SQuAD,6.84,77
+MaM 200,FT,10,66
+MaM 200,SPoT-MNLI,10,72
+MaM 200,SPoT-SQuAD,10,76.9

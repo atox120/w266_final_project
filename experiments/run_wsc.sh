@@ -13,8 +13,8 @@ export WANDB_PROJECT=full_fine_tuning
 
 
 DATE=`date +%Y%m%d`
-dataset="cb"
-dataset_name='stjokerli/TextToText_cb_seqio'
+dataset="wsc"
+dataset_name='stjokerli/TextToText_wsc_seqio'
 
 
 # set to 1 for debug mode which only
@@ -29,8 +29,8 @@ weight_decay=0.01
 max_grad_norm=0.1
 max_steps=100000
 num_train_epochs=30
-warmup_updates=10000
-lr=7e-6
+warmup_updates=500
+lr=5e-7
 lr_scheduler_type="polynomial"
 bsz=32
 gradient_steps=1
@@ -63,7 +63,7 @@ then
 fi
 
 
-exp_name=BART_FFT_${dataset}_final
+exp_name=BART_FFT_${dataset}
 
 SAVE=checkpoints/${dataset}/${exp_name}
 
@@ -73,10 +73,10 @@ python -u run_fft.py \
     --dataset_name ${dataset_name} \
     --model_name_or_path 'facebook/bart-large' \
     --cache_dir ${cache_dir} \
-    --preprocessing_num_workers 8 \
+    --preprocessing_num_workers 12 \
     --max_source_length 512 \
-    --max_target_length 5 \
-    --val_max_target_length 5 \
+    --max_target_length 128 \
+    --val_max_target_length 10 \
     --max_eval_samples ${max_eval_samples} \
     --num_beams 6 \
     --do_train \
@@ -111,4 +111,4 @@ python -u run_fft.py \
     --output_dir ${SAVE} ${extra_cmd} \
         2>&1 | tee ${SAVE}/log.txt
 
-#rm -rf ${SAVE}/pytorch_model.bin
+# rm -rf ${SAVE}/pytorch_model.bin

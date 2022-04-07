@@ -660,8 +660,27 @@ def main():
 
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
-
-    ## Hack in some code to evaluate RECORD, SQUAD, and MULTIRC evaluation.     
+    # predict_eval data for metric confirmation
+        predict_results = trainer.predict(
+            eval_dataset,
+            metric_key_prefix="eval",
+            max_length=data_args.val_max_target_length,
+            num_beams=gen_args.num_beams,
+        )
+        if trainer.is_world_process_zero():
+            if training_args.predict_with_generate:
+                predictions = tokenizer.batch_decode(
+                    predict_results.predictions, skip_special_tokens=True, clean_up_tokenization_spaces=True
+                )
+                predictions = [pred.strip() for pred in predictions]
+                # output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
+                # with open(output_prediction_file, "w") as writer:
+                #     writer.write("\n".join(predictions))
+                
+                output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_eval.txt")
+                with open(output_prediction_file, "w") as writer:
+                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(eval_dataset['idx'],predictions)]))
+    
     if data_args.dataset_name in ['stjokerli/TextToText_record_seqio','stjokerli/TextToText_squad_seqio']:
 
             final_eval_Score=squad(eval_dataset['answers'],predictions)
@@ -671,6 +690,7 @@ def main():
             
             final_eval_Score=MultircFinalMetric(eval_dataset,predictions)
             wandb.log(final_eval_Score)
+            
             
     if training_args.do_predict:
         logger.info("*** Predict ***")
