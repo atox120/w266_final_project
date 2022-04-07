@@ -1,0 +1,146 @@
+{"idx": 121, "label": "Shakespeare"}
+{"idx": 120, "label": "Carol"}
+{"idx": 35, "label": "the kitchen"}
+{"idx": 25, "label": "the needle"}
+{"idx": 38, "label": "Nelly"}
+{"idx": 68, "label": "Mary"}
+{"idx": 87, "label": "Mr. Bond"}
+{"idx": 79, "label": "Kirilov"}
+{"idx": 16, "label": "the pain"}
+{"idx": 104, "label": "mothers"}
+{"idx": 135, "label": "the famous painting"}
+{"idx": 2, "label": "the trains"}
+{"idx": 19, "label": "the con artist"}
+{"idx": 40, "label": "Nelly"}
+{"idx": 113, "label": "Sally"}
+{"idx": 90, "label": "Mr. Bond"}
+{"idx": 53, "label": "the soldier"}
+{"idx": 72, "label": "Paul"}
+{"idx": 73, "label": "Paul"}
+{"idx": 139, "label": "Shakespeare"}
+{"idx": 33, "label": "Mr. Bond"}
+{"idx": 34, "label": "the kitchen"}
+{"idx": 31, "label": "Mr. Bond"}
+{"idx": 131, "label": "Shakespeare"}
+{"idx": 47, "label": "Mark"}
+{"idx": 43, "label": "David"}
+{"idx": 56, "label": "the British flag"}
+{"idx": 23, "label": "theJackson"}
+{"idx": 106, "label": "The needy"}
+{"idx": 52, "label": "the soldier"}
+{"idx": 124, "label": "Shakespeare"}
+{"idx": 29, "label": "Nelly"}
+{"idx": 132, "label": "Shakespeare"}
+{"idx": 49, "label": "Mark"}
+{"idx": 37, "label": "Nelly"}
+{"idx": 136, "label": "the famous painting"}
+{"idx": 4, "label": "the trains"}
+{"idx": 115, "label": "Claire"}
+{"idx": 129, "label": "Shakespeare"}
+{"idx": 27, "label": "the needle"}
+{"idx": 126, "label": "Shakespeare"}
+{"idx": 109, "label": "Dave"}
+{"idx": 95, "label": "the Spanish hat"}
+{"idx": 6, "label": "Maude and Tatyana"}
+{"idx": 97, "label": "the Spanish hat"}
+{"idx": 117, "label": "the traffic light"}
+{"idx": 86, "label": "Collins"}
+{"idx": 63, "label": "Grandfather"}
+{"idx": 5, "label": "the trains"}
+{"idx": 100, "label": "the incident"}
+{"idx": 96, "label": "the Spanish hat"}
+{"idx": 110, "label": "Dave"}
+{"idx": 80, "label": "Kirilov"}
+{"idx": 138, "label": "the famous painting"}
+{"idx": 125, "label": "Shakespeare"}
+{"idx": 133, "label": "Shakespeare"}
+{"idx": 62, "label": "Grandfather"}
+{"idx": 14, "label": "Henry"}
+{"idx": 0, "label": "the trains"}
+{"idx": 20, "label": "the con artist"}
+{"idx": 30, "label": "Mr. Bond"}
+{"idx": 39, "label": "Nelly"}
+{"idx": 119, "label": "Carol"}
+{"idx": 41, "label": "Nelly"}
+{"idx": 26, "label": "the needle"}
+{"idx": 22, "label": "theJackson"}
+{"idx": 140, "label": "Shakespeare"}
+{"idx": 57, "label": "the British flag"}
+{"idx": 76, "label": "Kirilov"}
+{"idx": 85, "label": "Collins"}
+{"idx": 122, "label": "Shakespeare"}
+{"idx": 89, "label": "Mr. Bond"}
+{"idx": 105, "label": "mothers"}
+{"idx": 36, "label": "the kitchen"}
+{"idx": 1, "label": "the trains"}
+{"idx": 13, "label": "Larry"}
+{"idx": 44, "label": "Hermione"}
+{"idx": 83, "label": "Kirilov"}
+{"idx": 91, "label": "Mr. Bond"}
+{"idx": 103, "label": "the incident"}
+{"idx": 134, "label": "the famous painting"}
+{"idx": 55, "label": "the British flag"}
+{"idx": 50, "label": "Mark"}
+{"idx": 108, "label": "Dave"}
+{"idx": 74, "label": "Paul"}
+{"idx": 71, "label": "Tatyana"}
+{"idx": 18, "label": "the pain"}
+{"idx": 130, "label": "Shakespeare"}
+{"idx": 10, "label": "Maude and Tatyana"}
+{"idx": 102, "label": "the incident"}
+{"idx": 127, "label": "Shakespeare"}
+{"idx": 101, "label": "the incident"}
+{"idx": 42, "label": "David"}
+{"idx": 116, "label": "Claire"}
+{"idx": 67, "label": "Wainwrights"}
+{"idx": 7, "label": "Maude and Tatyana"}
+{"idx": 143, "label": "Shakespeare"}
+{"idx": 94, "label": "the Spanish hat"}
+{"idx": 92, "label": "Mr. Bond"}
+{"idx": 141, "label": "Shakespeare"}
+{"idx": 51, "label": "Mark"}
+{"idx": 3, "label": "the trains"}
+{"idx": 48, "label": "Mark"}
+{"idx": 75, "label": "Kirilov"}
+{"idx": 9, "label": "Maude and Tatyana"}
+{"idx": 45, "label": "Hermione"}
+{"idx": 78, "label": "Kirilov"}
+{"idx": 15, "label": "Henry"}
+{"idx": 107, "label": "The needy"}
+{"idx": 84, "label": "Collins"}
+{"idx": 144, "label": "the window sill"}
+{"idx": 69, "label": "Mary"}
+{"idx": 81, "label": "Kirilov"}
+{"idx": 114, "label": "Sally"}
+{"idx": 60, "label": "Tatyana"}
+{"idx": 77, "label": "Kirilov"}
+{"idx": 123, "label": "Shakespeare"}
+{"idx": 70, "label": "Tatyana"}
+{"idx": 21, "label": "theJackson"}
+{"idx": 98, "label": "Haven's play"}
+{"idx": 128, "label": "Shakespeare"}
+{"idx": 66, "label": "Wainwrights"}
+{"idx": 17, "label": "the pain"}
+{"idx": 82, "label": "Kirilov"}
+{"idx": 64, "label": "Grandfather"}
+{"idx": 145, "label": "the window sill"}
+{"idx": 54, "label": "the soldier"}
+{"idx": 142, "label": "Shakespeare"}
+{"idx": 11, "label": "Maude and Tatyana"}
+{"idx": 93, "label": "the Spanish hat"}
+{"idx": 12, "label": "Larry"}
+{"idx": 32, "label": "Mr. Bond"}
+{"idx": 137, "label": "the famous painting"}
+{"idx": 58, "label": "the British flag"}
+{"idx": 46, "label": "Mark"}
+{"idx": 112, "label": "Dave"}
+{"idx": 111, "label": "Dave"}
+{"idx": 99, "label": "Haven's play"}
+{"idx": 61, "label": "Grandfather"}
+{"idx": 59, "label": "Tatyana"}
+{"idx": 8, "label": "Maude and Tatyana"}
+{"idx": 118, "label": "the traffic light"}
+{"idx": 88, "label": "Mr. Bond"}
+{"idx": 24, "label": "the needle"}
+{"idx": 28, "label": "Nelly"}
+{"idx": 65, "label": "Wainwrights"}
