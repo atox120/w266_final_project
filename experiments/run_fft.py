@@ -54,6 +54,8 @@ from transformers.utils import check_min_version, is_offline_mode
 from transformers.utils.versions import require_version
 
 
+
+
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.18.0.dev0")
 
@@ -140,6 +142,11 @@ class DataTrainingArguments:
         default=None,
         metadata={"help": "The name of the column in the datasets containing the summaries (for summarization)."},
     )
+    idx_column: Optional[str] = field(
+        default=None,
+        metadata={"help": "The name of the column in the datasets containing the idx (for summarization)."},
+    )
+
     train_file: Optional[str] = field(
         default=None, metadata={"help": "The input training data file (a jsonlines or csv file)."}
     )
@@ -479,6 +486,16 @@ def main():
                 f"--summary_column' value '{data_args.summary_column}' needs to be one of: {', '.join(column_names)}"
             )
 
+# add index into dataset
+    if data_args.idx_column is None:
+        idx_column = dataset_columns[2] if dataset_columns is not None else column_names[2]
+    else:
+        idx_column = data_args.idx_column
+        if idx_column not in column_names:
+            raise ValueError(
+                f"--summary_column' value '{data_args.idx_column}' needs to be one of: {', '.join(column_names)}"
+            )        
+
     # Temporarily set max_target_length for training.
     max_target_length = data_args.max_target_length
     padding = "max_length" if data_args.pad_to_max_length else False
@@ -513,6 +530,18 @@ def main():
             ]
 
         model_inputs["labels"] = labels["input_ids"]
+        model_inputs['idx']= examples[idx_column]
+        model_inputs['original_target']=targets
+        
+        if data_args.dataset_name=='stjokerli/TextToText_squad_seqio':
+            model_inputs['answers']=targets
+
+        if data_args.dataset_name=='stjokerli/TextToText_record_seqio':
+            model_inputs['answers']=examples["answers"]
+            
+        elif data_args.dataset_name=='stjokerli/TextToText_multirc_seqio':
+            model_inputs['group_idx']=[i.split("-")[1] for i in examples["idx"]]
+
         return model_inputs
 
     if training_args.do_train:
@@ -665,7 +694,7 @@ def main():
             eval_dataset,
             metric_key_prefix="eval",
             max_length=data_args.val_max_target_length,
-            num_beams=gen_args.num_beams,
+            num_beams=num_beams,
         )
         if trainer.is_world_process_zero():
             if training_args.predict_with_generate:
@@ -684,12 +713,11 @@ def main():
     if data_args.dataset_name in ['stjokerli/TextToText_record_seqio','stjokerli/TextToText_squad_seqio']:
 
             final_eval_Score=squad(eval_dataset['answers'],predictions)
-            wandb.log(final_eval_Score)
-
     elif data_args.dataset_name=='stjokerli/TextToText_multirc_seqio':
             
             final_eval_Score=MultircFinalMetric(eval_dataset,predictions)
-            wandb.log(final_eval_Score)
+    import wandb
+    wandb.log(final_eval_Score)
             
             
     if training_args.do_predict:
@@ -713,9 +741,13 @@ def main():
                     predict_results.predictions, skip_special_tokens=True, clean_up_tokenization_spaces=True
                 )
                 predictions = [pred.strip() for pred in predictions]
-                output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
+                # output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
+                # with open(output_prediction_file, "w") as writer:
+                #     writer.write("\n".join(predictions))
+                
+                output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_submission.txt")
                 with open(output_prediction_file, "w") as writer:
-                    writer.write("\n".join(predictions))
+                    writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(predict_dataset['idx'],predictions)])) 
 
     kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "summarization"}
     if data_args.dataset_name is not None:
