@@ -20,6 +20,6 @@ Note that `RTE` training and validation sets are added to the `Ax-b` and `Ax-g` 
 * [MNLI](https://huggingface.co/datasets/stjokerli/TextToText_mnli_seqio)
 * [SQUAD](https://huggingface.co/datasets/stjokerli/TextToText_squad_seqio)
 
-## tasks we did not have time to use but still open it to the community
+## Additional Tasks. 
 
 * [DocNLI](https://huggingface.co/datasets/stjokerli/TextToText_DocNLI_seqio)
