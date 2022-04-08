@@ -709,15 +709,18 @@ def main():
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_eval.txt")
                 with open(output_prediction_file, "w") as writer:
                     writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(eval_dataset['idx'],predictions)]))
+    import wandb
     
     if data_args.dataset_name in ['stjokerli/TextToText_record_seqio','stjokerli/TextToText_squad_seqio']:
 
             final_eval_Score=squad(eval_dataset['answers'],predictions)
+            wandb.log(final_eval_Score)
+            
     elif data_args.dataset_name=='stjokerli/TextToText_multirc_seqio':
             
             final_eval_Score=MultircFinalMetric(eval_dataset,predictions)
-    import wandb
-    wandb.log(final_eval_Score)
+            wandb.log(final_eval_Score)
+    
             
             
     if training_args.do_predict:
