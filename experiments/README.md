@@ -1,17 +1,23 @@
-# How To run the experiments/sweeps
+# Instructions
 
-* for single experiment run
+The code in this folder was used to initiate the model training experiments. We interface with wandb to enable tracking of experiment progress and to use the sweep API. 
+
+The run settings used for all experiments are stored in the 'official_experiments' folder. From there, there are subfolders for whether we were source or task tuning, and for all the target tunings, whether the task was SQuAD, MNLI or a benchmark run. These experiments are designed to run within the pytorch container. 
+
+Experiments to produce full fine tuning are initiated from a shell script similar to the PETL repository, without the PETL parameter configuration. These runs should be run within the transformers container.
+
+* Single experiments (SPoT/Fine Tuning)
 ```python
 python run_experiment.py --file run_settings/example.json --debug True --sweep False
 ```
 Note that you have to change the `dataset_name`, `run_name` and `output_dir` accordingly to avoid overwriting in checkpoints.
 
-* for sweep run
+* Sweeps
 ```python
 python run_experiment.py --file sweep_config/sweep_template.yaml --debug True --sweep True
 ```
 
-Note that debug and sweep argument is set default as False
+Note that debug and sweep argument is set by default as False
 
 So this two chunk has same effects (no debug no sweep)
 
@@ -23,9 +29,9 @@ python run_experiment.py --file run_settings/example.json  --sweep False
 python run_experiment.py --file run_settings/example.json --debug False
 ```
 
-# Debug Mode
+## Debug Mode
 
-The training parameters will be change if the debug argument is set as below
+The training parameters can be altered for debugging, whereby one can configure the number of steps and training examples used. 
 
 * True
 ```python
@@ -51,18 +57,18 @@ The training parameters will be change if the debug argument is set as below
         settings['eval_steps'] = 200 
 ```
 
-# How to do the source learning
+# Source Tuning
 
 * set model_or_path right
 
 ```json
     "model_or_path":"facebook/bart-large"
 ```
-make sure it is `facebook/bart-large`, and do not set up any `load_path` or `resume_from_checkpoint` value in the json. Do not include the entry of `load_path` or `resume_from_checkpoint`)
+Make the model is `facebook/bart-large`, and do not set up any `load_path` or `resume_from_checkpoint` value in the json. Do not include the entry of `load_path` or `resume_from_checkpoint`)
 
-# How to continue from checkpoints
+## How to resume from a Checkpoint
 
-In case the run crash in the middel.
+This is useful when one wishes to resume from a given checkpoint to continue training
 
 Add the following change the following settings in the Json File
 
@@ -72,24 +78,21 @@ Add the following change the following settings in the Json File
     "run_id": "3h1ov3ig" 
 ```
 
-Note that   
-
 DO NOT CHANGE the `"output_dir"` where checkpoints are saved.
 
 * `"resume_from_checkpoint": true`
 
-this work the same no matter its a source tunning or a target tunning
+These settings apply to source and target tuning. The run_id needs to match the original run_id in weights and biases if the user wishes to resume tracking,. 
 
 * `"run_id": "3h1ov3ig"`
 
-this is listed in the wandb run id column. You have to input this to resume from checkpoint. this will continue your run in wandb as well.
+this is listed in the wandb run id column. 
 
 * `"overwrite_output_dir": false,`
 
-this must be false otherwise you will loss you previous checkpoints. (I did some integrating check to set it false if "resume_from_checkpoint" is true though)
+This must be set to false otherwise the previous checkpoint will be overwritten.
 
-
-# How to do the transfer learing for target tasks
+# Transferring PETL parameters for target tuning. 
 
 modify the `.json` file with followings
 
@@ -112,7 +115,7 @@ Change the value from `facebook/bart-large` into the address of the checkpoint f
 "resume_from_checkpoint":"/workspace/w266_final_project/src/checkpoints/mnli_prefix_relearn/checkpoint-100000"
 ```
 
-* max_step, learning rate and eval/save step need to be changed accordingly
+* max_step, learning rate and eval/save step can then be changed to suit your training schedule, for example:
 
 ```json
 "max_steps": 100000
@@ -121,7 +124,7 @@ Change the value from `facebook/bart-large` into the address of the checkpoint f
 "save_steps":200
 ```
 
-Note that for transfer learning the following PETL Params should be exactly the same with the set-ups used in building the checkpoint
+Note that for transfer learning the following PETL Params should be exactly the same with the set-ups used in building the checkpoint. This way new PETL parameters are not set with default weights and the original tuned parametes are transferred. 
 ```python
 ## PETL Params
     "attn_mode": "prefix"
@@ -137,7 +140,7 @@ Note that for transfer learning the following PETL Params should be exactly the 
     "ffn_bn":512
 ```
 
-# Folder name in sweep mode
+## Folder name in sweep mode
 
 Wandb `run name` and `id` will be assigned alone with `starting time stamp` in that trail as the folder name for easy indexing.
 
@@ -147,7 +150,7 @@ flowing-sweep-8_a7km6w7j_2022Mar23_002833
 RunName_RunId_TimeStamp
 ```
 
-# Log.txt in the checkpoint folder
+## Log.txt in the checkpoint folder
 
 All settings and wandb results are saved in `log.txt` file inside of checkpoint folder for back tracking.
 
@@ -158,7 +161,13 @@ All settings and wandb results are saved in `log.txt` file inside of checkpoint 
 
 In worst case, the run could be replicate by the information saved in `log.txt`
 
-# How set-up json file in batch.
+## How set-up json file in batch.
 
 Use the `SettingFilesCreater.ipynb` to create the json file in batch.
 This is useful if all you need to change is the `dataset name` and `run name` and `output dir` will align accordingly.
+
+# Running Full Fine Tuning
+
+The scripts `run_<task>.sh` can be used to run Full Fine Tuning. The shell scripts are modifications of the PETL scrips used by He et al., but it removes the settings where the PETL parameters are instatiated. It calls a `run_fft.py` script, which is based off the huggingface repository pytorch example for summarization tasks. 
+
+The `run_<task>.sh` should be executed within the repository and in the same directory as the `run_fft.py` and `utilities.py` file, which has some additional metrics used for some tasks. The container built using the dockerfile Dockerfile_transformers should be used for this work. 
