@@ -2,11 +2,11 @@
 
 1. To build docker image:
 ```bash
-sudo docker build -f <DOCKERFILE NAME> -t <Your Dockerhub ID>/<Imagename>:<tag> .
+sudo docker build -f <DOCKERFILE> -t <Your Dockerhub ID>/<Imagename>:<tag> .
 ```
 2. To run The docker images:
 ```bash
-sudo docker run -it -v /path/to/this/repo/w266_final_project:/workspace/w266_final_project -p 8888:8888 --gpus=all rbector/w266-final-project:latest
+sudo docker run -it -v /path/to/this/repo/w266_final_project:/workspace/w266_final_project -p 8888:8888 --gpus=all <Your Dockerhub ID>/<Imagename>:<tag>
 ```
 ## Dockerfiles:
 
