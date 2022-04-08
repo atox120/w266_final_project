@@ -248,6 +248,11 @@ class DataTrainingArguments:
         },
     )
 
+    run_id: Optional[str] = field(
+        default=None,
+        metadata={"help": "The name of the wandb run id "},
+    )
+
     def __post_init__(self):
         if self.dataset_name is None and self.train_file is None and self.validation_file is None:
             raise ValueError("Need either a dataset name or a training/validation file.")
@@ -653,6 +658,11 @@ def main():
         compute_metrics=compute_metrics if training_args.predict_with_generate else None,
     )
 
+    import wandb
+    
+    if data_args.run_id is not None:
+        wandb.init(id=data_args.run_id, resume="must", entity="w266_wra")    
+
     # Training
     if training_args.do_train:
         checkpoint = None
@@ -709,13 +719,13 @@ def main():
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions_for_eval.txt")
                 with open(output_prediction_file, "w") as writer:
                     writer.write("\n".join(["{"+f'"idx": {i[0]}, "label": "{i[1]}"'+"}" for i in zip(eval_dataset['idx'],predictions)]))
-    import wandb
+    
     
     if data_args.dataset_name in ['stjokerli/TextToText_record_seqio','stjokerli/TextToText_squad_seqio']:
 
             final_eval_Score=squad(eval_dataset['answers'],predictions)
             wandb.log(final_eval_Score)
-            
+
     elif data_args.dataset_name=='stjokerli/TextToText_multirc_seqio':
             
             final_eval_Score=MultircFinalMetric(eval_dataset,predictions)
