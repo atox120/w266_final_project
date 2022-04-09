@@ -28,6 +28,7 @@ Note that `RTE` training and validation sets are added to the `Ax-b` and `Ax-g` 
 ## Attribution
 
 For consistency, we have based our code off the implementations from the following references:
-- Lester et al. [ref] (https://aclanthology.org/2021.emnlp-main.243/)
-- Vu et al. [ref] (https://arxiv.org/abs/2110.07904) (to be published in ACL 2022)
+- Lester et al. [ref](https://aclanthology.org/2021.emnlp-main.243/)
+- Vu et al. [ref](https://arxiv.org/abs/2110.07904) (to be published in ACL 2022)
+
 See the official prompt tuning github repository [here](https://github.com/google-research/prompt-tuning)
