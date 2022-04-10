@@ -168,7 +168,7 @@ This is useful if all you need to change is the `dataset name` and `run name` an
 
 # Running Full Fine Tuning
 
-The scripts `run_<task>.sh` scripts found in the 'Full_Fine_Tuning' folder can be used to run Full Fine Tuning. The shell scripts are modifications of the PETL scrips used by He et al., but it removes the settings where the PETL parameters are instatiated. It calls a `run_fft.py` script, which is based off the huggingface repository pytorch example for summarization tasks. 
+The scripts `run_<task>.sh` scripts found in the 'Full_Fine_Tuning' folder can be used to run Full Fine Tuning. The shell scripts are modifications of the PETL scrips used by [He et al.](https://github.com/jxhe/unify-parameter-efficient-tuning/tree/master/exps), but it removes the code and settings where the PETL parameters are instatiated. It calls a `run_fft.py` script, which is based off the huggingface repository pytorch example for summarization tasks. 
 
 The `run_<task>.sh` should be executed within the repository and in the same directory as the `run_fft.py` and `utilities.py` file, which has some additional metrics used for some tasks. The container built using the dockerfile Dockerfile_transformers should be used for this work. 
 
