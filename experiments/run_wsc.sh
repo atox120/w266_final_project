@@ -29,7 +29,7 @@ weight_decay=0.01
 max_grad_norm=0.1
 max_steps=100000
 num_train_epochs=30
-warmup_updates=500
+warmup_updates=10000
 lr=5e-7
 lr_scheduler_type="polynomial"
 bsz=32
@@ -63,7 +63,7 @@ then
 fi
 
 
-exp_name=BART_FFT_${dataset}
+exp_name=BART_FFT_${dataset}_test
 
 SAVE=checkpoints/${dataset}/${exp_name}
 
@@ -75,7 +75,7 @@ python -u run_fft.py \
     --cache_dir ${cache_dir} \
     --preprocessing_num_workers 12 \
     --max_source_length 512 \
-    --max_target_length 128 \
+    --max_target_length 10 \
     --val_max_target_length 10 \
     --max_eval_samples ${max_eval_samples} \
     --num_beams 6 \

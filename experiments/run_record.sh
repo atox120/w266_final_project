@@ -30,8 +30,8 @@ max_grad_norm=0.1
 max_steps=100000
 num_train_epochs=30
 warmup_updates=5000
-lr=5e-7
-lr_scheduler_type="polynomial"
+lr=1e-5
+lr_scheduler_type="cosine_with_restarts"
 bsz=16
 gradient_steps=2
 
@@ -63,7 +63,7 @@ then
 fi
 
 
-exp_name=BART_FFT_${dataset}
+exp_name=BART_FFT_${dataset}_test2
 
 SAVE=checkpoints/${dataset}/${exp_name}
 
@@ -75,8 +75,8 @@ python -u run_fft.py \
     --cache_dir ${cache_dir} \
     --preprocessing_num_workers 12 \
     --max_source_length 512 \
-    --max_target_length 128 \
-    --val_max_target_length 5 \
+    --max_target_length 15 \
+    --val_max_target_length 15 \
     --max_eval_samples ${max_eval_samples} \
     --num_beams 6 \
     --do_train \
