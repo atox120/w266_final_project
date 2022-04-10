@@ -168,13 +168,13 @@ This is useful if all you need to change is the `dataset name` and `run name` an
 
 # Running Full Fine Tuning
 
-The scripts `run_<task>.sh` can be used to run Full Fine Tuning. The shell scripts are modifications of the PETL scrips used by He et al., but it removes the settings where the PETL parameters are instatiated. It calls a `run_fft.py` script, which is based off the huggingface repository pytorch example for summarization tasks. 
+The scripts `run_<task>.sh` scripts found in the 'Full_Fine_Tuning' folder can be used to run Full Fine Tuning. The shell scripts are modifications of the PETL scrips used by He et al., but it removes the settings where the PETL parameters are instatiated. It calls a `run_fft.py` script, which is based off the huggingface repository pytorch example for summarization tasks. 
 
 The `run_<task>.sh` should be executed within the repository and in the same directory as the `run_fft.py` and `utilities.py` file, which has some additional metrics used for some tasks. The container built using the dockerfile Dockerfile_transformers should be used for this work. 
 
 ## How to resume from checkpoint folder for Full Fine Tuning
 
-* Back-up the checkpoint folder to avoid overwrite by mistake
+* Note, it is reccomended that one Back-up the checkpoint folder to avoid overwrites by mistake
 
 * Coment out the following commend in .sh setting file
 
@@ -184,15 +184,15 @@ The `run_<task>.sh` should be executed within the repository and in the same dir
 
 * Add the following arguments
 
-> `--run_id "1lgyt33y" \`
+> `--run_id "<your_run_id_in_wandb>" \`
 
 >`--resume_from_checkpoint ${SAVE}\`
 
 Note that run_id is the text id shown in wandb and ${SAVE} should be the same folder in checkpoint.
 
-Have to do the above modification basing on the .sh setting file on the original run.
+Perform the above modification basied on the .sh settings file from the original run.
 
-## How to resume from checkpoint and do the prediction only for Full Fine Tuning
+## How to resume from a checkpoint, perform prediction only for Full Fine Tuning
 
 Modify the following additional arguments
 
