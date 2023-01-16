@@ -6,7 +6,7 @@ RUN apt update
 RUN python3 -m pip install --no-cache-dir --upgrade pip
 
 # Install seqio and wandb
-RUN pip install seqio wandb IProgress huggingface_hub ipywidgets t5
+RUN pip install seqio wandb IProgress huggingface_hub ipywidgets t5 jupyterlab
 
 # Clone He and Lester repos
 RUN git clone https://github.com/jxhe/unify-parameter-efficient-tuning.git && \
